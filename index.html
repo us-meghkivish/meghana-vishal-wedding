@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meghana & Vishal — Our Wedding</title>
+
+  <meta name="description" content="Join us as Meghana & Vishal celebrate their wedding — March 6–8, 2026. RSVP for Marriage and Reception." />
+  <meta property="og:title" content="Meghana & Vishal — Our Wedding" />
+  <meta property="og:description" content="You're invited! RSVP for Marriage & Reception." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://i.imgur.com/H80QkmD.jpeg" />
+  <meta property="og:image:alt" content="Meghana & Vishal" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="assets/icons/favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Tangerine:wght@700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+  <!-- Tailwind via CDN (fine for Pages; warning is OK for now) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- GSAP (for micro-animations on the language switch, etc.) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+  <!-- Supabase SDK (MUST be before script.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Your site styles (keep your existing CSS file) -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- Your main script (below) -->
+  <script src="assets/js/script.js" defer></script>
+</head>
+<body class="antialiased">
+
+  <div id="cursor-dot"></div>
+
+  <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50">
+    <nav class="container mx-auto px-6 py-5 flex justify-between items-center">
+      <a href="#" aria-label="Home" class="w-24 h-24 text-[var(--text-charcoal)]">
+        <!-- Monogram SVG -->
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="currentColor" role="img" aria-labelledby="logoTitle logoDesc">
+          <title id="logoTitle">MV Monogram</title>
+          <desc id="logoDesc">Monogram logo with initials M and V and botanical wreath</desc>
+          <g text-anchor="middle" fill-rule="evenodd">
+            <text x="78" y="105" font-family="'Playfair Display', serif" font-size="60" text-anchor="end">M</text>
+            <path d="M100 50 V 120" stroke-width="1" fill="none"/>
+            <text x="122" y="105" font-family="'Playfair Display', serif" font-size="60" text-anchor="start">V</text>
+            <text x="100" y="145" font-family="'Poppins', sans-serif" font-size="12" letter-spacing="2" fill-opacity="0.8">MEGHANA & VISHAL</text>
+            <path d="M 50 155 C 70 170, 130 170, 150 155" fill="none" stroke-width="1" />
+            <path d="M 60 159 a 10 10 0 0 1 10 -5" fill="none" stroke-width="1"/>
+            <path d="M 80 165 a 10 10 0 0 1 10 -5" fill="none" stroke-width="1"/>
+            <path d="M 140 159 a 10 10 0 0 0 -10 -5" fill="none" stroke-width="1"/>
+            <path d="M 120 165 a 10 10 0 0 0 -10 -5" fill="none" stroke-width="1"/>
+          </g>
+        </svg>
+      </a>
+
+      <!-- Desktop nav -->
+      <div class="hidden md:flex items-center space-x-8 text-sm tracking-wider uppercase">
+        <a href="#story"   class="nav-link" data-i18n="nav_story">Our Story</a>
+        <a href="#details" class="nav-link" data-i18n="nav_details">Details</a>
+        <a href="#gallery" class="nav-link" data-i18n="nav_gallery">Gallery</a>
+        <a href="#rsvp"    class="nav-link" data-i18n="nav_rsvp">RSVP</a>
+
+        <!-- Language Switch -->
+        <button id="lang-toggle"
+          class="relative group inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold tracking-wide
+                 transition-all duration-300 hover:shadow-md hover:-translate-y-[1px]"
+          aria-label="Toggle language">
+          <span class="i18n-static">EN</span>
+          <span class="relative inline-flex h-5 w-10 items-center rounded-full bg-[var(--accent-gold)]/25">
+            <span id="lang-thumb" class="absolute left-0.5 h-4 w-4 rounded-full bg-[var(--accent-gold)] shadow transition-all duration-300"></span>
+          </span>
+          <span class="i18n-static">తెలుగు</span>
+          <span class="pointer-events-none absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style="background: radial-gradient(60% 60% at 30% 30%, rgba(255,255,255,.35), transparent 60%);"></span>
+        </button>
+      </div>
+
+      <!-- Mobile menu button -->
+      <button id="mobile-menu-button" class="md:hidden flex items-center" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open Menu">
+        <svg class="w-6 h-6 text-[var(--text-charcoal)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+      </button>
+    </nav>
+
+    <!-- Mobile dropdown -->
+    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4" role="menu">
+      <a href="#story"   class="block py-2 uppercase text-sm" data-i18n="nav_story">Our Story</a>
+      <a href="#details" class="block py-2 uppercase text-sm" data-i18n="nav_details">Details</a>
+      <a href="#gallery" class="block py-2 uppercase text-sm" data-i18n="nav_gallery">Gallery</a>
+      <a href="#rsvp"    class="block py-2 uppercase text-sm" data-i18n="nav_rsvp">RSVP</a>
+
+      <!-- Language switch (mobile copy) -->
+      <div class="pt-3">
+        <button id="lang-toggle-mobile"
+          class="relative inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold tracking-wide w-auto"
+          aria-label="Toggle language">
+          <span>EN</span>
+          <span class="relative inline-flex h-5 w-10 items-center rounded-full bg-[var(--accent-gold)]/25">
+            <span id="lang-thumb-mobile" class="absolute left-0.5 h-4 w-4 rounded-full bg-[var(--accent-gold)] shadow transition-all duration-300"></span>
+          </span>
+          <span>తెలుగు</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="hero" style="background-image: url('https://i.imgur.com/H80QkmD.jpeg');">
+      <div class="relative z-10 p-4">
+        <h1 class="text-6xl md:text-8xl lg:text-9xl font-serif fade-in-up">Meghana & Vishal</h1>
+        <p class="mt-4 text-lg md:text-xl tracking-widest uppercase fade-in-up delay-200" data-i18n="hero_tagline">Are getting married</p>
+        <p class="mt-2 text-md md:text-lg tracking-wider fade-in-up delay-400" data-i18n="hero_date">March 8, 2026</p>
+      </div>
+    </section>
+
+    <!-- COUNTDOWN -->
+    <section class="py-20 md:py-24 relative">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <svg class="w-24 h-auto text-[var(--accent-gold)] opacity-30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      </div>
+      <div id="countdown" class="container mx-auto px-6 flex justify-center text-center space-x-4 md:space-x-8" aria-live="polite">
+        <div class="reveal"><div class="text-4xl md:text-6xl font-serif text-[var(--accent-gold)]" id="days">0</div><div class="text-sm uppercase tracking-widest mt-1" data-i18n="label_days">Days</div></div>
+        <div class="reveal"><div class="text-4xl md:text-6xl font-serif text-[var(--accent-gold)]" id="hours">0</div><div class="text-sm uppercase tracking-widest mt-1" data-i18n="label_hours">Hours</div></div>
+        <div class="reveal"><div class="text-4xl md:text-6xl font-serif text-[var(--accent-gold)]" id="minutes">0</div><div class="text-sm uppercase tracking-widest mt-1" data-i18n="label_minutes">Minutes</div></div>
+        <div class="reveal"><div class="text-4xl md:text-6xl font-serif text-[var(--accent-gold)]" id="seconds">0</div><div class="text-sm uppercase tracking-widest mt-1" data-i18n="label_seconds">Seconds</div></div>
+      </div>
+    </section>
+
+    <div class="section-divider">
+      <svg viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M99.5,2.5 C99.5,3.88071187 98.3807119,5 97,5 C95.6192881,5 94.5,3.88071187 94.5,2.5 C94.5,1.11928813 95.6192881,0 97,0 C98.3807119,0 99.5,1.11928813 99.5,2.5 Z M50,5 L92,5 M3,5 C1.61928813,5 0.5,3.88071187 0.5,2.5 C0.5,1.11928813 1.61928813,0 3,0 C4.38071187,0 5.5,1.11928813 5.5,2.5 C5.5,3.88071187 4.38071187,5 3,5 Z M8,5 L50,5" stroke="currentColor" stroke-width="1" stroke-linecap="round"></path></svg>
+    </div>
+
+    <!-- STORY -->
+    <section id="story" class="py-20 md:py-24 bg-white/50">
+      <div class="container mx-auto px-6">
+        <div id="story-container" class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          <div class="reveal">
+            <h2 class="text-4xl md:text-5xl font-serif mb-6" data-i18n="our_story">Our Story</h2>
+            <p class="mb-4 text-gray-600 leading-relaxed" data-i18n="story_p1">
+              With the blessings of our parents and elders, we are taking our first step towards a new life. We are so excited to celebrate our love story with all of our cherished family and friends.
+            </p>
+            <p class="text-gray-600 leading-relaxed" data-i18n="story_p2">
+              Your presence and blessings as we begin our journey together is the greatest gift of all.
+            </p>
+          </div>
+          <div id="story-photos" class="relative aspect-square reveal">
+            <img id="bride-photo" src="https://i.imgur.com/M6svB16.jpeg" alt="Meghana" class="w-2/3 h-2/3 object-cover absolute top-0 left-0 shadow-xl transition-transform duration-1000 ease-out">
+            <img id="groom-photo" src="https://i.imgur.com/vgfhVcm.jpeg" alt="Vishal" class="w-2/3 h-2/3 object-cover absolute bottom-0 right-0 shadow-xl border-8 border-white transition-transform duration-1000 ease-out">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider">
+      <svg viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M99.5,2.5 C99.5,3.88071187 98.3807119,5 97,5 C95.6192881,5 94.5,3.88071187 94.5,2.5 C94.5,1.11928813 95.6192881,0 97,0 C98.3807119,0 99.5,1.11928813 99.5,2.5 Z M50,5 L92,5 M3,5 C1.61928813,5 0.5,3.88071187 0.5,2.5 C0.5,1.11928813 1.61928813,0 3,0 C4.38071187,0 5.5,1.11928813 5.5,2.5 C5.5,3.88071187 4.38071187,5 3,5 Z M8,5 L50,5" stroke="currentColor" stroke-width="1" stroke-linecap="round"></path></svg>
+    </div>
+
+    <!-- DETAILS -->
+    <section id="details" class="py-20 md:py-24">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-4xl md:text-5xl font-serif mb-12 reveal" data-i18n="wedding_details">Wedding Details</h2>
+
+        <!-- 2 columns since we only show Muhurtham + Reception -->
+        <div class="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+
+        <!-- Muhurtham -->
+        <div class="reveal" style="transition-delay: 200ms;">
+            <h3 class="text-2xl font-serif mb-3 text-[var(--accent-gold)]" data-i18n="muhurtham">Muhurtham</h3>
+            <p class="font-semibold">March 8, 2026 at 11:00 AM</p>
+            <p class="mt-2 text-sm text-gray-600">
+            Sri Venkateswara Temple<br>456 Divine Rd, Plano, TX 75023
+            </p>
+
+            <!-- Watch Live (opens in new tab) -->
+            <a id="wedding-live"
+            href="#"
+            target="_blank" rel="noopener noreferrer"
+            class="mt-4 inline-flex items-center gap-2 px-5 py-2 rounded-full
+                    bg-[var(--accent-gold)] text-white border border-[var(--accent-gold)]
+                    hover:bg-transparent hover:text-[var(--accent-gold)]
+                    transition disabled:opacity-50 disabled:pointer-events-none">
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true">
+                <path d="M8 5v14l11-7-11-7z"></path>
+            </svg>
+            <span>Watch Live</span>
+            <span class="sr-only">(opens in new tab)</span>
+            </a>
+
+            <!-- Map directions -->
+            <div class="mt-2">
+            <a id="wedding-map"
+                href="https://maps.app.goo.gl/example-muhurtham-map"
+                target="_blank" rel="noopener"
+                class="inline-flex items-center gap-1 text-[var(--accent-gold)] underline">
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true">
+                <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path>
+                </svg>
+                <span>Map directions</span>
+            </a>
+            </div>
+        </div>
+
+        <!-- Reception -->
+        <div class="reveal" style="transition-delay: 400ms;">
+            <h3 class="text-2xl font-serif mb-3 text-[var(--accent-gold)]" data-i18n="reception">Reception</h3>
+            <p class="font-semibold">March 8, 2026 at 7:00 PM</p>
+            <p class="mt-2 text-sm text-gray-600">
+            The Crystal Hall<br>789 Eternity Blvd, Frisco, TX 75034
+            </p>
+
+            <!-- Watch Live (opens in new tab) -->
+            <a id="reception-live"
+            href="#"
+            target="_blank" rel="noopener noreferrer"
+            class="mt-4 inline-flex items-center gap-2 px-5 py-2 rounded-full
+                    bg-[var(--accent-gold)] text-white border border-[var(--accent-gold)]
+                    hover:bg-transparent hover:text-[var(--accent-gold)]
+                    transition disabled:opacity-50 disabled:pointer-events-none">
+            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true">
+                <path d="M8 5v14l11-7-11-7z"></path>
+            </svg>
+            <span>Watch Live</span>
+            <span class="sr-only">(opens in new tab)</span>
+            </a>
+
+            <!-- Map directions -->
+            <div class="mt-2">
+            <a id="reception-map"
+                href="https://maps.app.goo.gl/example-reception-map"
+                target="_blank" rel="noopener"
+                class="inline-flex items-center gap-1 text-[var(--accent-gold)] underline">
+                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true">
+                <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path>
+                </svg>
+                <span>Map directions</span>
+            </a>
+            </div>
+        </div>
+
+        </div>
+    </div>
+    </section>
+
+    <div class="section-divider">
+      <svg viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M99.5,2.5 C99.5,3.88071187 98.3807119,5 97,5 C95.6192881,5 94.5,3.88071187 94.5,2.5 C94.5,1.11928813 95.6192881,0 97,0 C98.3807119,0 99.5,1.11928813 99.5,2.5 Z M50,5 L92,5 M3,5 C1.61928813,5 0.5,3.88071187 0.5,2.5 C0.5,1.11928813 1.61928813,0 3,0 C4.38071187,0 5.5,1.11928813 5.5,2.5 C5.5,3.88071187 4.38071187,5 3,5 Z M8,5 L50,5" stroke="currentColor" stroke-width="1" stroke-linecap="round"></path></svg>
+    </div>
+
+    <!-- GALLERY -->
+    <section id="gallery" class="py-20 md:py-24 bg-white/50">
+      <div class="container mx-auto px-6 text-center">
+        <h2 class="text-4xl md:text-5xl font-serif mb-12 reveal" data-i18n="our_moments">Our Moments</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+          <div class="gallery-item reveal"><div class="gallery-overlay"></div><img src="https://i.imgur.com/7mJ1t8p.jpeg" alt="Meghana and Vishal" loading="lazy"></div>
+          <div class="gallery-item reveal" style="transition-delay: 100ms;"><div class="gallery-overlay"></div><img src="https://i.imgur.com/dZQLSgR.jpeg" alt="Meghana and Vishal" loading="lazy"></div>
+          <div class="gallery-item reveal" style="transition-delay: 200ms;"><div class="gallery-overlay"></div><img src="https://i.imgur.com/M6svB16.jpeg" alt="Meghana" loading="lazy"></div>
+          <div class="gallery-item reveal" style="transition-delay: 300ms;"><div class="gallery-overlay"></div><img src="https://i.imgur.com/APncrru.jpeg" alt="Meghana and Vishal" loading="lazy"></div>
+          <div class="gallery-item reveal md:col-start-2" style="transition-delay: 400ms;"><div class="gallery-overlay"></div><img src="https://i.imgur.com/m2w1L2A.jpeg" alt="Meghana and Vishal" loading="lazy"></div>
+          <div class="gallery-item reveal" style="transition-delay: 500ms;"><div class="gallery-overlay"></div><img src="https://i.imgur.com/uLg2Y2U.jpeg" alt="Meghana and Vishal" loading="lazy"></div>
+          <div class="gallery-item reveal" style="transition-delay: 600ms;"><div class="gallery-overlay"></div><img src="https://i.imgur.com/vgfhVcm.jpeg" alt="Vishal" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RSVP -->
+    <section id="rsvp" class="py-20 md:py-32">
+      <div class="container mx-auto px-6 text-center">
+        <h2 class="text-4xl md:text-5xl font-serif mb-6 reveal" data-i18n="title">Will You Be Joining Us?</h2>
+        <p class="max-w-xl mx-auto mb-10 text-gray-600 reveal" data-i18n="subtitle">Kindly RSVP by February 8, 2026, so we can make arrangements.</p>
+
+        <form id="rsvp-form" class="max-w-xl mx-auto grid gap-4 text-left reveal">
+          <div>
+            <label class="block text-sm mb-1" data-i18n="full_name_label">Full Name *</label>
+            <input name="full_name" required class="w-full border px-3 py-2 rounded" />
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm mb-1" data-i18n="email_label">Email *</label>
+              <input type="email" name="email" required class="w-full border px-3 py-2 rounded" />
+            </div>
+            <div>
+              <label class="block text-sm mb-1" data-i18n="phone_label">Phone</label>
+              <input name="phone" class="w-full border px-3 py-2 rounded" />
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm mb-1" data-i18n="side_label">Side *</label>
+              <select name="side" required class="w-full border px-3 py-2 rounded">
+                <option value="Bride" data-i18n="side_bride">Bride</option>
+                <option value="Groom" data-i18n="side_groom">Groom</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm mb-1" data-i18n="headcount_label">Headcount (incl. you) *</label>
+              <input type="number" name="headcount" min="0" max="20" required class="w-full border px-3 py-2 rounded" />
+            </div>
+          </div>
+
+          <fieldset class="border rounded p-3">
+            <legend class="text-sm px-1" data-i18n="events_legend">Events attending</legend>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <label class="flex items-center gap-2">
+                <input type="checkbox" name="attending_marriage" />
+                <span data-i18n="attend_marriage">Marriage (Mar 8, 2026)</span>
+              </label>
+              <label class="flex items-center gap-2">
+                <input type="checkbox" name="attending_reception" />
+                <span data-i18n="attend_reception">Reception (Mar 8, 2026, evening)</span>
+              </label>
+            </div>
+            <p class="text-xs text-gray-500 mt-2" data-i18n="note_private">(Sangeet, Mehendi are private invites.)</p>
+          </fieldset>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm mb-1" data-i18n="dietary_label">Dietary Preference</label>
+              <select name="dietary" class="w-full border px-3 py-2 rounded">
+                <option value="Veg" data-i18n="dietary_veg">Veg</option>
+                <option value="Non-Veg" data-i18n="dietary_nonveg">Non-Veg</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm mb-1" data-i18n="notes_label">Notes</label>
+              <input name="notes" class="w-full border px-3 py-2 rounded" placeholder="Allergies, accessibility, etc." />
+            </div>
+          </div>
+
+          <input type="hidden" name="language" id="rsvp-language" value="en" />
+
+          <button class="btn-gold px-8 py-3 mt-2 rounded" type="submit" data-i18n="submit_btn">Submit RSVP</button>
+
+          <p id="rsvp-status" class="text-sm mt-3"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-white py-10">
+    <div class="container mx-auto px-6 text-center text-gray-500">
+      <div class="w-28 h-28 text-[var(--accent-gold)] mb-2 mx-auto">
+        <!-- Footer monogram (same as header) -->
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="currentColor" role="img" aria-labelledby="footerTitle footerDesc">
+          <title id="footerTitle">MV Monogram</title>
+          <desc id="footerDesc">Monogram logo with initials M and V and botanical wreath</desc>
+          <g text-anchor="middle" fill-rule="evenodd">
+            <text x="78" y="105" font-family="'Playfair Display', serif" font-size="60" text-anchor="end">M</text>
+            <path d="M100 50 V 120" stroke-width="1" fill="none"/>
+            <text x="122" y="105" font-family="'Playfair Display', serif" font-size="60" text-anchor="start">V</text>
+            <text x="100" y="145" font-family="'Poppins', sans-serif" font-size="12" letter-spacing="2" fill-opacity="0.8">MEGHANA & VISHAL</text>
+            <path d="M 50 155 C 70 170, 130 170, 150 155" fill="none" stroke-width="1" />
+            <path d="M 60 159 a 10 10 0 0 1 10 -5" fill="none" stroke-width="1"/>
+            <path d="M 80 165 a 10 10 0 0 1 10 -5" fill="none" stroke-width="1"/>
+            <path d="M 140 159 a 10 10 0 0 0 -10 -5" fill="none" stroke-width="1"/>
+            <path d="M 120 165 a 10 10 0 0 0 -10 -5" fill="none" stroke-width="1"/>
+          </g>
+        </svg>
+      </div>
+      <p class="text-sm" data-i18n="rights">© 2026 Meghana & Vishal. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

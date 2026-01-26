@@ -1,0 +1,195 @@
+:root {
+  --bg-beige: #F5F1ED;
+  --text-charcoal: #333333;
+  --accent-gold: #B89F78;
+  --dark-charcoal: #212121;
+  --intro-text-color: #ffffff;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-beige);
+  color: var(--text-charcoal);
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Show custom cursor only on desktop for accessibility */
+@media (min-width: 768px) {
+  body { cursor: none; }
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 200%;
+  z-index: -1;
+  background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25 50 C25 63.8, 36.2 75, 50 75 C63.8 75, 75 63.8, 75 50 C75 36.2, 63.8 25, 50 25 C36.2 25, 25 36.2, 25 50 Z" stroke="%23E9E2DC" stroke-width="1" fill="none" /><path d="M50 0 V25 M50 75 V100 M0 50 H25 M75 50 H100" stroke="%23E9E2DC" stroke-width="1" fill="none" /></svg>');
+  background-repeat: repeat;
+  opacity: 0.5;
+  animation: bg-pan 60s linear infinite;
+}
+@keyframes bg-pan {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-50%, -50%); }
+}
+
+h1, h2, h3, h4, .font-serif {
+  font-family: 'Playfair Display', serif;
+}
+.font-script {
+  font-family: 'Tangerine', cursive;
+}
+
+#hero {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+#hero::after {
+  content:'';
+  position: absolute;
+  inset: 0;
+  background: rgba(33,33,33,0.5);
+  z-index: 1;
+}
+
+.nav-link {
+  transition: color 0.3s ease;
+  color: var(--text-charcoal);
+  position: relative;
+  padding-bottom: 4px;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: var(--accent-gold);
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease-out, transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.btn-gold {
+  background-color: var(--accent-gold);
+  color: white;
+  transition: all 0.3s ease;
+  border: 1px solid var(--accent-gold);
+}
+.btn-gold:hover {
+  background-color: transparent;
+  color: var(--accent-gold);
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 4 / 5;
+}
+.gallery-item img {
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gallery-item:hover img {
+  transform: scale(1.05);
+}
+.gallery-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(184, 159, 120, 0.3);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+.border-gold { border-color: var(--accent-gold); }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeInUp 1s ease-out forwards; opacity: 0; }
+.delay-200 { animation-delay: 200ms; }
+.delay-400 { animation-delay: 400ms; }
+
+.tick { animation: tick 0.5s ease-out; }
+@keyframes tick {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+#cursor-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-gold);
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+  display: none; /* show only on desktop via media query below */
+}
+/* show custom cursor only on large screens */
+@media (min-width: 768px) {
+  #cursor-dot { display: block; }
+}
+#cursor-dot.hovered {
+  transform: translate(-50%, -50%) scale(2.5);
+  opacity: 0.5;
+}
+
+.section-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 0;
+}
+.section-divider svg {
+  width: 100px;
+  height: auto;
+  color: var(--accent-gold);
+  opacity: 0.5;
+}
+
+.map-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--accent-gold);
+  text-decoration: underline;
+  transition: opacity 0.3s ease;
+}
+.map-link:hover { opacity: 0.8; }
