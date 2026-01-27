@@ -29,9 +29,36 @@
         transform: scaleY(1); transform-origin: bottom; 
         transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1); 
     }
-    /* When JS adds .active to the container, shrink the curtain */
-    /* test*/
     .curtain-reveal.active .curtain { transform: scaleY(0); transform-origin: top; }
+    /* --- 3D Gyroscope Animations --- */
+    @keyframes gyroSpin {
+      0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+      100% { transform: rotateX(360deg) rotateY(180deg) rotateZ(360deg); }
+    }
+    @keyframes gyroSpinRev {
+      0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+      100% { transform: rotateX(-360deg) rotateY(-180deg) rotateZ(-360deg); }
+    }
+    
+    /* The 3D Rings */
+    .ring-3d {
+      position: absolute;
+      border-radius: 50%;
+      border: 2px solid rgba(212, 175, 55, 0.8); /* Gold */
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+      transition: all 0.5s ease;
+    }
+    
+    /* When Playing: Activate 3D Spin */
+    #music-control.playing .outer-ring { animation: gyroSpin 3s linear infinite; }
+    #music-control.playing .inner-ring { animation: gyroSpinRev 4s linear infinite; }
+    
+    /* Floating Effect for the whole button */
+    @keyframes float-music {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+    #music-control { animation: float-music 4s ease-in-out infinite; }
   </style>
 
 </head>
@@ -42,14 +69,17 @@
   
   <div id="cursor-dot" class="hidden md:block fixed w-3 h-3 bg-[#D4AF37] rounded-full pointer-events-none z-[9999] mix-blend-difference"></div>
 
-  <div id="music-control" class="fixed bottom-6 left-6 z-50 flex items-center gap-3 bg-white/10 backdrop-blur-md p-3 rounded-full border border-white/20 shadow-2xl cursor-pointer hover:scale-105 transition-transform group">
-    <div id="music-wave" class="flex gap-1 items-end h-4 px-1">
-      <span class="w-0.5 bg-[#D4AF37] h-2 group-hover:h-4 transition-all duration-300"></span>
-      <span class="w-0.5 bg-[#D4AF37] h-3 group-hover:h-2 transition-all duration-300 delay-75"></span>
-      <span class="w-0.5 bg-[#D4AF37] h-1 group-hover:h-3 transition-all duration-300 delay-150"></span>
+  <audio id="bg-music" src="assets/music/wedding-song.mp3"></audio>
+  
+  <button id="music-control" class="fixed bottom-6 left-6 z-50 w-20 h-20 flex items-center justify-center group perspective-1000 cursor-pointer bg-transparent border-none outline-none">
+    <div class="outer-ring ring-3d w-16 h-16 border-t-[#D4AF37] border-b-[#D4AF37] border-l-transparent border-r-transparent"></div>
+    <div class="inner-ring ring-3d w-12 h-12 border-l-[#fff] border-r-[#fff] border-t-transparent border-b-transparent opacity-60"></div>
+    <div class="relative w-10 h-10 bg-gradient-to-br from-[#D4AF37] to-[#8a7020] rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.6)] z-10 transition-transform duration-300 group-hover:scale-110">
+      <i class="fa-solid fa-music text-white text-sm drop-shadow-md"></i>
+      <div class="absolute inset-0 rounded-full bg-[#D4AF37] -z-10 opacity-0 group-[.playing]:animate-ping"></div>
     </div>
-    <audio id="bg-music" autoplay src="assets/music/wedding-song.mp3"></audio>
-  </div>
+
+  </button>
 
   <div class="fixed bottom-6 right-6 z-50 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-xl flex items-center gap-2">
     <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
@@ -62,9 +92,7 @@
       <a href="#" class="group relative z-50 flex items-center justify-center p-2">
   
   <div class="relative w-16 h-16 md:w-20 md:h-20 flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
-    
     <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-xl filter">
-      
       <defs>
         <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" style="stop-color:#bf953f;stop-opacity:1" />
@@ -72,18 +100,13 @@
           <stop offset="100%" style="stop-color:#b38728;stop-opacity:1" />
         </linearGradient>
       </defs>
-
       <circle cx="50" cy="50" r="48" fill="none" stroke="url(#goldGrad)" stroke-width="1" class="opacity-60" />
       <circle cx="50" cy="50" r="45" fill="white" stroke="url(#goldGrad)" stroke-width="2" />
-
       <path d="M 35 35 L 40 25 L 50 30 L 60 25 L 65 35 Z" fill="url(#goldGrad)" />
-      
       <text x="50" y="68" font-family="'Cinzel', serif" font-size="35" font-weight="bold" fill="#1a1a1a" text-anchor="middle" letter-spacing="-2">
         M<tspan font-size="25" fill="url(#goldGrad)" dy="-2">&</tspan>V
       </text>
-      
     </svg>
-
     <div class="absolute inset-0 bg-yellow-400/20 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
   </div>
 
@@ -91,7 +114,6 @@
     <span class="text-[10px] uppercase tracking-[0.3em] text-gray-500">The Wedding Of</span>
     <span class="text-sm font-serif text-[#D4AF37]">Meghana & Vishal</span>
   </div>
-
 </a>
       
       <div class="flex items-center gap-8">
@@ -143,7 +165,6 @@
   </section>
 
 <section id="story" class="py-20 bg-stone-50 overflow-hidden relative">
-  
   <div class="absolute top-0 left-0 w-64 h-64 bg-[#D4AF37]/5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
   <div class="absolute bottom-0 right-0 w-96 h-96 bg-[#D4AF37]/5 rounded-full blur-3xl translate-x-1/3 translate-y-1/3"></div>
 
@@ -151,16 +172,16 @@
     <div class="flex flex-col md:flex-row items-center gap-12 md:gap-16">
       
       <div class="w-full md:w-1/2 text-center md:text-left" data-aos="fade-right">
-        <h2 class="text-3xl md:text-5xl font-serif text-[#D4AF37] mb-6">Written in the Stars</h2>
+        <h2 class="text-3xl md:text-5xl font-serif text-[#D4AF37] mb-6" data-i18n="hero_sub">Written in the Stars</h2>
         
         <div class="space-y-6 text-gray-600 leading-relaxed font-light text-lg">
-          <p>
+          <p data-i18n="story_p1">
             Some love stories start with a spark; ours began with a quiet understanding that grew into an unshakeable bond. From our very first conversation, we knew there was something special—a sense of home we had never found anywhere else.
           </p>
-          <p>
+          <p data-i18n="story_p2">
             Through laughter, adventures, and life's little moments, we realized that we weren't just falling in love; we were walking toward a destiny that had been waiting for us all along.
           </p>
-          <p class="font-medium text-gray-800 italic">
+          <p class="font-medium text-gray-800 italic" data-i18n="story_quote">
             "In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine."
           </p>
         </div>
@@ -257,7 +278,7 @@
                <div class="w-10 h-0.5 bg-zinc-100 mb-6"></div>
                
                <p class="text-zinc-600 font-light mb-8 leading-relaxed">
-                 SAGAR CONVENTION CENTRE<br>
+                 Sagar Convention Centre<br>
                  <span class="text-sm text-zinc-400">Y junction<br>Nirmal, Telangana</span>
                </p>
                
@@ -276,7 +297,7 @@
 
   <section id="albums" class="py-24 bg-[#Fdf8f5]">
     <div class="container mx-auto px-6">
-      <h2 class="text-4xl md:text-6xl font-serif text-center mb-16 text-zinc-900" data-i18n="albums_title">Celebrations</h2>
+      <h2 class="text-4xl md:text-6xl font-serif text-center mb-16 text-zinc-900" data-i18n="albums_title">Photo Albums</h2>
       
       <div class="flex md:grid md:grid-cols-4 gap-8 overflow-x-auto pb-10 md:pb-0 snap-x snap-mandatory px-4 scrollbar-hide">
         
@@ -332,7 +353,7 @@
     </div>
   </section>
 
-<section id="rsvp" class="py-24 relative bg-[#FFFBF0] overflow-hidden">
+  <section id="rsvp" class="py-24 relative bg-[#FFFBF0] overflow-hidden">
   
   <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-5">
     <div class="absolute -top-64 -right-64 w-[800px] h-[800px] rounded-full border-[60px] border-dashed border-yellow-900 animate-spin-slow"></div>
@@ -343,7 +364,7 @@
     
     <div class="text-center mb-12" data-aos="fade-down">
       <span class="text-[#D4AF37] tracking-[0.3em] text-xs font-bold uppercase">Be Our Guest</span>
-      <h2 class="text-4xl md:text-5xl font-serif text-gray-800 mt-2 mb-4">Join The Celebration</h2>
+      <h2 class="text-4xl md:text-5xl font-serif text-gray-800 mt-2 mb-4" data-i18n="rsvp_headline">Join The Celebration</h2>
       <p class="text-gray-500 italic font-serif">"Happiness doubles when shared. We can't wait to see you!"</p>
     </div>
 
@@ -436,7 +457,7 @@
     </div>
 
   </div>
-</section>
+  </section>
 
   <footer class="py-16 bg-[#1a1a1a] text-center">
     <div class="text-[#D4AF37] text-2xl font-serif mb-4">Meghana & Vishal</div>
@@ -445,4 +466,3 @@
 
 </body>
 </html>
-
