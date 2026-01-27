@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
       venues_title: "When & Where", venue_wedding: "The Wedding", venue_wedding_time: "August 14, 2025 | 9:30 AM",
       venue_reception: "The Reception", venue_reception_time: "August 14, 2025 | 7:00 PM",
       btn_live: "Watch Live", btn_map: "View Map",
-      albums_title: "Celebrations", album_haldi: "Haldi", album_sangeet: "Sangeet", album_wedding: "Wedding", album_reception: "Reception",
+      albums_title: "Photo Albums", album_haldi: "Haldi", album_sangeet: "Sangeet", album_wedding: "Wedding", album_reception: "Reception",
       rsvp_title: "RSVP", rsvp_deadline: "Please respond by August 1, 2025",
       visit_label: "Views:"
     },
