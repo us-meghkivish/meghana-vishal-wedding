@@ -201,3 +201,4 @@ input[type="radio"]:checked + div {
   border-color: var(--gold);
   box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4);
 }
+

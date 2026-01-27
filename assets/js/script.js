@@ -202,6 +202,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  
+
 
   // =========================================================
   // 4. MUSIC PLAYER LOGIC (Auto-Play with Browser Policy Fix)
