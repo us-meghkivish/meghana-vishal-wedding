@@ -203,3 +203,29 @@ input[type="radio"]:checked + div {
   box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4);
 }
 
+/* --- FLOATING POLAROID ANIMATION --- */
+@keyframes float-left {
+  0% { transform: translateY(0px) rotate(-3deg); }
+  50% { transform: translateY(-15px) rotate(-3deg); }
+  100% { transform: translateY(0px) rotate(-3deg); }
+}
+
+@keyframes float-right {
+  0% { transform: translateY(0px) rotate(3deg); }
+  50% { transform: translateY(-15px) rotate(3deg); }
+  100% { transform: translateY(0px) rotate(3deg); }
+}
+
+/* Apply animation to cards */
+.floating-card-1 {
+  animation: float-left 6s ease-in-out infinite;
+}
+
+.floating-card-2 {
+  animation: float-right 7s ease-in-out infinite; /* Slightly slower for natural feel */
+}
+
+/* Pause on hover */
+.floating-card-1:hover, .floating-card-2:hover {
+  animation-play-state: paused;
+}

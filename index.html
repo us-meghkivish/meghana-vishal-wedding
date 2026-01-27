@@ -48,7 +48,7 @@
       <span class="w-0.5 bg-[#D4AF37] h-3 group-hover:h-2 transition-all duration-300 delay-75"></span>
       <span class="w-0.5 bg-[#D4AF37] h-1 group-hover:h-3 transition-all duration-300 delay-150"></span>
     </div>
-    <audio id="bg-music" loop autoplay src="assets/music/wedding-song.mp3"></audio>
+    <audio id="bg-music" autoplay src="assets/music/wedding-song.mp3"></audio>
   </div>
 
   <div class="fixed bottom-6 right-6 z-50 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-xl flex items-center gap-2">
@@ -332,74 +332,111 @@
     </div>
   </section>
 
-  <section id="rsvp" class="py-24 md:py-32 bg-white">
-    <div class="container mx-auto px-4 md:px-6 max-w-3xl">
-      <div class="text-center mb-16">
-        <h2 class="text-4xl md:text-6xl font-serif text-zinc-900 mb-4" data-i18n="rsvp_title">RSVP</h2>
-        <p class="text-xs uppercase tracking-widest text-zinc-500" data-i18n="rsvp_deadline">Please respond by Feb 15, 2026</p>
-      </div>
+<section id="rsvp" class="py-24 relative bg-[#FFFBF0] overflow-hidden">
+  
+  <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-5">
+    <div class="absolute -top-64 -right-64 w-[800px] h-[800px] rounded-full border-[60px] border-dashed border-yellow-900 animate-spin-slow"></div>
+    <div class="absolute -bottom-64 -left-64 w-[600px] h-[600px] rounded-full border-[40px] border-dotted border-yellow-900 animate-spin-reverse"></div>
+  </div>
 
-      <form id="rsvp-form" class="bg-[#Fdf8f5] p-8 md:p-12 rounded-3xl border border-zinc-100 shadow-xl relative overflow-hidden">
-        <div class="absolute top-0 left-0 w-full h-1.5 bg-[#D4AF37]"></div>
+  <div class="container mx-auto px-6 max-w-3xl relative z-10">
+    
+    <div class="text-center mb-12" data-aos="fade-down">
+      <span class="text-[#D4AF37] tracking-[0.3em] text-xs font-bold uppercase">Be Our Guest</span>
+      <h2 class="text-4xl md:text-5xl font-serif text-gray-800 mt-2 mb-4">Join The Celebration</h2>
+      <p class="text-gray-500 italic font-serif">"Happiness doubles when shared. We can't wait to see you!"</p>
+    </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          <div class="space-y-2">
-             <label class="text-[10px] uppercase font-bold tracking-widest text-zinc-400" data-i18n="rsvp_name">Full Name</label>
-             <input type="text" name="full_name" required class="w-full bg-transparent border-b border-zinc-300 py-3 outline-none focus:border-[#D4AF37] transition-colors text-lg font-serif">
-          </div>
-          <div class="space-y-2">
-             <label class="text-[10px] uppercase font-bold tracking-widest text-zinc-400" data-i18n="rsvp_phone">Mobile Number</label>
-             <input type="tel" name="phone" required class="w-full bg-transparent border-b border-zinc-300 py-3 outline-none focus:border-[#D4AF37] transition-colors text-lg font-serif">
+    <div class="bg-white p-8 md:p-12 rounded-2xl shadow-2xl border-2 border-[#D4AF37]/20 relative" data-aos="zoom-in">
+      
+      <div class="absolute top-4 left-4 w-16 h-16 border-t-2 border-l-2 border-[#D4AF37]"></div>
+      <div class="absolute top-4 right-4 w-16 h-16 border-t-2 border-r-2 border-[#D4AF37]"></div>
+      <div class="absolute bottom-4 left-4 w-16 h-16 border-b-2 border-l-2 border-[#D4AF37]"></div>
+      <div class="absolute bottom-4 right-4 w-16 h-16 border-b-2 border-r-2 border-[#D4AF37]"></div>
+
+      <form id="rsvp-form" class="space-y-8 relative z-10">
+        
+        <div class="text-center">
+          <label class="block text-sm font-bold text-[#D4AF37] uppercase tracking-wide mb-2">Who is joining us?</label>
+          <input type="text" id="name" required 
+            class="w-full text-center px-4 py-4 rounded-lg bg-[#FFFBF0] border-b-2 border-[#D4AF37]/30 focus:border-[#D4AF37] outline-none text-xl font-serif text-gray-800 placeholder-gray-400 transition-all" 
+            placeholder="Please enter your full name">
+        </div>
+
+        <div>
+          <label class="block text-sm font-bold text-gray-400 uppercase tracking-wide mb-2 text-center">Contact Number</label>
+          <div class="flex justify-center">
+            <select id="country-code" class="w-[100px] px-2 py-3 rounded-l-lg bg-gray-50 border border-gray-200 focus:border-[#D4AF37] outline-none text-sm cursor-pointer">
+              <option value="+91" selected>🇮🇳 +91</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+971">🇦🇪 +971</option>
+              <option value="">Other</option>
+            </select>
+            <input 
+              type="tel" id="phone-number" required maxlength="10" pattern="[0-9]{10}"
+              class="w-full md:w-1/2 px-4 py-3 rounded-r-lg border border-gray-200 focus:border-[#D4AF37] outline-none tracking-widest font-medium" 
+              placeholder="98765 43210"
+              oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+            >
           </div>
         </div>
 
-        <div class="mb-10 text-center">
-          <label class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-4" data-i18n="rsvp_side_label">You are from</label>
-          <div class="flex justify-center gap-6">
-             <label class="cursor-pointer group">
-               <input type="radio" name="side" value="Bride" required class="peer sr-only">
-               <div class="px-8 py-3 border border-zinc-300 rounded-full peer-checked:bg-[#D4AF37] peer-checked:text-white peer-checked:border-[#D4AF37] transition-all text-xs font-bold uppercase tracking-wide group-hover:border-[#D4AF37]" data-i18n="rsvp_bride_side">Bride's Side</div>
-             </label>
-             <label class="cursor-pointer group">
-               <input type="radio" name="side" value="Groom" required class="peer sr-only">
-               <div class="px-8 py-3 border border-zinc-300 rounded-full peer-checked:bg-[#D4AF37] peer-checked:text-white peer-checked:border-[#D4AF37] transition-all text-xs font-bold uppercase tracking-wide group-hover:border-[#D4AF37]" data-i18n="rsvp_groom_side">Groom's Side</div>
-             </label>
+        <div>
+          <label class="block text-sm font-bold text-gray-400 uppercase tracking-wide mb-4 text-center">Invited By</label>
+          <div class="grid grid-cols-2 gap-4">
+            <label class="cursor-pointer group">
+              <input type="radio" name="side" value="Bride" required class="peer hidden">
+              <div class="p-4 rounded-xl border-2 border-dashed border-gray-300 peer-checked:border-[#D4AF37] peer-checked:bg-[#FFFBF0] transition-all text-center hover:shadow-md group-hover:border-[#D4AF37]/50">
+                <div class="text-2xl mb-1 opacity-50 peer-checked:opacity-100 transition-opacity">👰🏻‍♀️</div>
+                <div class="font-serif font-bold text-gray-600 peer-checked:text-[#D4AF37]">Bride's Family</div>
+              </div>
+            </label>
+            <label class="cursor-pointer group">
+              <input type="radio" name="side" value="Groom" class="peer hidden">
+              <div class="p-4 rounded-xl border-2 border-dashed border-gray-300 peer-checked:border-[#D4AF37] peer-checked:bg-[#FFFBF0] transition-all text-center hover:shadow-md group-hover:border-[#D4AF37]/50">
+                <div class="text-2xl mb-1 opacity-50 peer-checked:opacity-100 transition-opacity">🤵🏻‍♂️</div>
+                <div class="font-serif font-bold text-gray-600 peer-checked:text-[#D4AF37]">Groom's Family</div>
+              </div>
+            </label>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-           <div class="bg-white p-6 rounded-2xl border border-zinc-100">
-             <label class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-3" data-i18n="rsvp_events_label">Events Attending</label>
-             <div class="space-y-3">
-               <label class="flex items-center gap-3 cursor-pointer">
-                 <input type="checkbox" name="event_marriage" class="accent-[#D4AF37] w-5 h-5">
-                 <span class="text-sm font-medium text-zinc-700" data-i18n="rsvp_event_m">Wedding (Muhurtham)</span>
-               </label>
-               <label class="flex items-center gap-3 cursor-pointer">
-                 <input type="checkbox" name="event_reception" class="accent-[#D4AF37] w-5 h-5">
-                 <span class="text-sm font-medium text-zinc-700" data-i18n="rsvp_event_r">Reception (Evening)</span>
-               </label>
-             </div>
-           </div>
+        <div class="text-center">
+          <label class="block text-sm font-bold text-gray-400 uppercase tracking-wide mb-2">Total Guests</label>
+          <div class="relative w-full md:w-2/3 mx-auto">
+            <select id="guests-dropdown" class="w-full text-center px-4 py-3 rounded-full border border-gray-300 focus:border-[#D4AF37] outline-none bg-white cursor-pointer appearance-none shadow-sm hover:shadow-md transition-shadow text-lg font-medium">
+              <option value="1">Just Me (1)</option>
+              <option value="2">Couple (2)</option>
+              <option value="3">Small Family (3)</option>
+              <option value="4">Family (4)</option>
+              <option value="more" class="font-bold text-[#D4AF37]">Big Family (5 or more)...</option>
+            </select>
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">▼</div>
+          </div>
 
-           <div class="bg-white p-6 rounded-2xl border border-zinc-100 flex flex-col items-center justify-center">
-             <label class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-3" data-i18n="rsvp_guests">Total Guests</label>
-             <div class="flex items-center gap-6">
-               <button type="button" id="minus" class="w-10 h-10 rounded-full border border-zinc-200 flex items-center justify-center hover:bg-[#D4AF37] hover:text-white transition-all text-xl">-</button>
-               <span id="guest-count" class="font-serif text-3xl w-8 text-center text-[#D4AF37]">1</span>
-               <button type="button" id="plus" class="w-10 h-10 rounded-full border border-zinc-200 flex items-center justify-center hover:bg-[#D4AF37] hover:text-white transition-all text-xl">+</button>
-               <input type="hidden" name="guests" id="guests-input" value="1">
-             </div>
-           </div>
+          <div id="manual-guest-wrapper" class="grid grid-rows-[0fr] transition-all duration-500 ease-in-out mt-2">
+            <div class="overflow-hidden w-full md:w-2/3 mx-auto">
+              <input type="number" id="guests-manual" min="5" max="100" 
+                class="w-full px-4 py-3 rounded-lg border-2 border-[#D4AF37] bg-yellow-50 text-center font-bold text-[#D4AF37] focus:ring-0 outline-none placeholder-yellow-600/50" 
+                placeholder="Enter exact number (5+)">
+            </div>
+          </div>
         </div>
 
-        <button type="submit" class="w-full bg-[#1a1a1a] text-white py-5 rounded-full uppercase tracking-[0.2em] text-xs font-bold hover:bg-[#D4AF37] transition-all duration-500 shadow-xl hover:shadow-2xl transform hover:-translate-y-1" data-i18n="rsvp_btn">
-          Confirm Attendance
-        </button>
-        <p id="rsvp-status" class="text-center text-sm font-medium italic mt-6 text-[#D4AF37] min-h-[20px]"></p>
+        <div class="pt-4">
+          <button type="submit" id="submit-btn" class="w-full py-4 bg-gradient-to-r from-[#bf953f] to-[#b38728] text-white font-bold tracking-[0.2em] uppercase rounded-lg hover:shadow-lg hover:scale-[1.01] transition-all duration-300 relative overflow-hidden group">
+            <span class="relative z-10">Confirm Presence</span>
+            <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500"></div>
+          </button>
+          <p id="form-status" class="text-center text-sm font-medium mt-4 hidden"></p>
+        </div>
+
       </form>
     </div>
-  </section>
+
+  </div>
+</section>
 
   <footer class="py-16 bg-[#1a1a1a] text-center">
     <div class="text-[#D4AF37] text-2xl font-serif mb-4">Meghana & Vishal</div>

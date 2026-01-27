@@ -5,18 +5,21 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================================================
   gsap.registerPlugin(ScrollTrigger);
 
-  // SUPABASE CONFIGURATION
-  // If you want to save RSVPs to a real database, add your keys here.
-  const SB_URL = 'YOUR_SUPABASE_URL_HERE';
-  const SB_KEY = 'YOUR_SUPABASE_KEY_HERE';
+  // 🔴🔴🔴 PASTE YOUR SUPABASE KEYS HERE 🔴🔴🔴
+  const SB_URL = 'https://sunuodrpzvkdgdocmcqw.supabase.co';
+  const SB_KEY = 'sb_publishable_tX0LkWnAeO1yf-pzm3r6Eg_53nDIWsq';
   
   let supabaseClient = null;
+  
+  // Initialize Supabase
   try {
     if (typeof supabase !== 'undefined' && SB_URL.startsWith('https://')) {
       supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+    } else {
+      console.warn("Supabase SDK not loaded or keys missing.");
     }
   } catch (err) {
-    console.log("Supabase not configured. Running in simulation mode.");
+    console.log("Supabase initialization failed:", err);
   }
 
 
@@ -28,115 +31,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const content = {
     en: {
-      // Navigation
-      nav_story: "Our Story",
-      nav_gallery: "Gallery",
-      nav_venues: "Venues",
-      nav_albums: "Albums",
-      nav_rsvp: "RSVP",
-      
-      // Hero
+      nav_story: "Our Story", nav_gallery: "Gallery", nav_venues: "Venues", nav_albums: "Albums", nav_rsvp: "RSVP",
       hero_tagline: "We Are Getting Married",
       label_days: "Days", label_hours: "Hrs", label_minutes: "Mins", label_seconds: "Secs",
-      
-      // Story
-      story_label: "How It Happened",
-      story_title: "It Wasn't Love at First Sight...",
-      story_p1: "It started with a casual coffee that turned into a 4-hour conversation. We didn't realize it then, but amidst the debates about movies and shared laughter over bad jokes, we were finding our home in each other.",
-      story_p2: "From long drives with no destination to quiet moments that said everything, our bond grew stronger every day. Now, with the blessings of our families, we are ready to turn our \"best friendship\" into a \"forever partnership.\"",
+      story_label: "How It Happened", story_title: "It Wasn't Love at First Sight...",
+      story_p1: "It started with a casual coffee that turned into a 4-hour conversation...",
+      story_p2: "From long drives with no destination to quiet moments...",
       story_quote: "\"Everything makes sense when we're together.\"",
-      
-      // Gallery
-      gallery_title: "Captured Moments",
-      gallery_sub: "Glimpses of our journey",
-
-      // Venues (New)
-      venues_title: "When & Where",
-      venue_wedding: "The Wedding",
-      venue_wedding_time: "March 8, 2026 | 11:11 AM",
-      venue_reception: "The Reception",
-      venue_reception_time: "March 8, 2026 | 7:00 PM",
-      btn_live: "Watch Live",
-      btn_map: "View Map",
-      
-      // Albums
-      albums_title: "Celebrations",
-      album_haldi: "Haldi",
-      album_sangeet: "Sangeet",
-      album_wedding: "Wedding",
-      album_reception: "Reception",
-      
-      // RSVP
-      rsvp_title: "RSVP",
-      rsvp_deadline: "Please respond by Feb 15, 2026",
-      rsvp_name: "Full Name",
-      rsvp_phone: "Mobile Number",
-      rsvp_side_label: "You are from",
-      rsvp_bride_side: "Bride's Side",
-      rsvp_groom_side: "Groom's Side",
-      rsvp_events_label: "Events Attending",
-      rsvp_event_m: "Wedding (Muhurtham)",
-      rsvp_event_r: "Reception (Evening)",
-      rsvp_guests: "Total Guests",
-      rsvp_btn: "Confirm Attendance",
-      
-      // Footer/Misc
+      gallery_title: "Captured Moments", gallery_sub: "Glimpses of our journey",
+      venues_title: "When & Where", venue_wedding: "The Wedding", venue_wedding_time: "August 14, 2025 | 9:30 AM",
+      venue_reception: "The Reception", venue_reception_time: "August 14, 2025 | 7:00 PM",
+      btn_live: "Watch Live", btn_map: "View Map",
+      albums_title: "Celebrations", album_haldi: "Haldi", album_sangeet: "Sangeet", album_wedding: "Wedding", album_reception: "Reception",
+      rsvp_title: "RSVP", rsvp_deadline: "Please respond by August 1, 2025",
       visit_label: "Views:"
     },
     te: {
-      // Navigation
-      nav_story: "మా కథ",
-      nav_gallery: "జ్ఞాపకాలు",
-      nav_venues: "వేదికలు",
-      nav_albums: "వేడుకలు",
-      nav_rsvp: "ఆహ్వానం",
-      
-      // Hero
+      nav_story: "మా కథ", nav_gallery: "జ్ఞాపకాలు", nav_venues: "వేదికలు", nav_albums: "వేడుకలు", nav_rsvp: "ఆహ్వానం",
       hero_tagline: "మేము ఒక్కటవుతున్నాము",
       label_days: "రోజులు", label_hours: "గంటలు", label_minutes: "నిమిషాలు", label_seconds: "సెకన్లు",
-      
-      // Story
-      story_label: "మా ప్రయాణం",
-      story_title: "ఇది తొలిచూపు ప్రేమ కాదు...",
-      story_p1: "మా పరిచయం ఒక సాధారణ కాఫీతో మొదలైంది. సినిమాల గురించి చర్చలు, చిన్న చిన్న జోకులు... మాకు తెలియకుండానే మేము ఒకరికొకరం దగ్గరయ్యాం.",
-      story_p2: "గమ్యం లేని ప్రయాణాలు, మౌనంగా సాగిన సంభాషణలు... మా బంధం బలపడింది. ఇప్పుడు, పెద్దల ఆశీర్వాదంతో, మా స్నేహాన్ని పెళ్లి బంధంగా మార్చుకుంటున్నాం.",
+      story_label: "మా ప్రయాణం", story_title: "ఇది తొలిచూపు ప్రేమ కాదు...",
+      story_p1: "మా పరిచయం ఒక సాధారణ కాఫీతో మొదలైంది...",
+      story_p2: "గమ్యం లేని ప్రయాణాలు, మౌనంగా సాగిన సంభాషణలు...",
       story_quote: "\"మేము కలిసున్నప్పుడు ప్రపంచం అందంగా కనిపిస్తుంది.\"",
-      
-      // Gallery
-      gallery_title: "మధుర క్షణాలు",
-      gallery_sub: "మా ప్రయాణంలోని కొన్ని దృశ్యాలు",
-
-      // Venues
-      venues_title: "వేదికలు",
-      venue_wedding: "వివాహం",
-      venue_wedding_time: "మార్చి 8, 2026 | ఉదయం 11:11",
-      venue_reception: "రిసెప్షన్",
-      venue_reception_time: "మార్చి 8, 2026 | సాయంత్రం 7:00",
-      btn_live: "లైవ్ చూడండి",
-      btn_map: "మ్యాప్ చూడండి",
-      
-      // Albums
-      albums_title: "వేడుకలు",
-      album_haldi: "హల్దీ",
-      album_sangeet: "సంగీత్",
-      album_wedding: "వివాహం",
-      album_reception: "రిసెప్షన్",
-      
-      // RSVP
-      rsvp_title: "ఆహ్వానం",
-      rsvp_deadline: "దయచేసి ఫిబ్రవరి 15, 2026 లోపు తెలియజేయండి",
-      rsvp_name: "పూర్తి పేరు",
-      rsvp_phone: "ఫోన్ నంబర్",
-      rsvp_side_label: "మీరు ఎవరి తరపు?",
-      rsvp_bride_side: "వధువు తరపు",
-      rsvp_groom_side: "వరుడు తరపు",
-      rsvp_events_label: "కార్యక్రమాలు",
-      rsvp_event_m: "వివాహం (ముహూర్తం)",
-      rsvp_event_r: "రిసెప్షన్",
-      rsvp_guests: "మొత్తం అతిథులు",
-      rsvp_btn: "నిర్ధారించండి",
-
-      // Footer
+      gallery_title: "మధుర క్షణాలు", gallery_sub: "మా ప్రయాణంలోని కొన్ని దృశ్యాలు",
+      venues_title: "వేదికలు", venue_wedding: "వివాహం", venue_wedding_time: "ఆగస్టు 14, 2025 | ఉదయం 9:30",
+      venue_reception: "రిసెప్షన్", venue_reception_time: "ఆగస్టు 14, 2025 | సాయంత్రం 7:00",
+      btn_live: "లైవ్ చూడండి", btn_map: "మ్యాప్ చూడండి",
+      albums_title: "వేడుకలు", album_haldi: "హల్దీ", album_sangeet: "సంగీత్", album_wedding: "వివాహం", album_reception: "రిసెప్షన్",
+      rsvp_title: "ఆహ్వానం", rsvp_deadline: "దయచేసి ఆగస్టు 1, 2025 లోపు తెలియజేయండి",
       visit_label: "వీక్షణలు:"
     }
   };
@@ -144,8 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (langBtn) {
     langBtn.addEventListener("click", () => {
       currentLang = currentLang === "en" ? "te" : "en";
-      
-      // Animate transition
       document.querySelectorAll("[data-i18n]").forEach(el => {
         gsap.to(el, { opacity: 0, duration: 0.2, onComplete: () => {
           const key = el.getAttribute("data-i18n");
@@ -155,8 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
           gsap.to(el, { opacity: 1, duration: 0.2 });
         }});
       });
-      
-      // Update Button Text
       langBtn.innerText = currentLang === "en" ? "EN / తెలుగు" : "తెలుగు / EN";
     });
   }
@@ -165,56 +84,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================================================
   // 3. CINEMATIC ANIMATIONS (GSAP)
   // =========================================================
-  
-  // A. Hero Text Staggered Entry
   const heroTl = gsap.timeline();
-  heroTl.to(".animate-fade-in-up", {
-    y: 0,
-    opacity: 1,
-    duration: 1.2,
-    stagger: 0.2,
-    ease: "power3.out",
-    delay: 0.2
-  });
+  heroTl.to(".animate-fade-in-up", { y: 0, opacity: 1, duration: 1.2, stagger: 0.2, ease: "power3.out", delay: 0.2 });
 
-  // B. Scroll Reveal for Text
   gsap.utils.toArray('.reveal-text').forEach(text => {
-    gsap.to(text, {
-      scrollTrigger: {
-        trigger: text,
-        start: "top 85%", 
-        toggleActions: "play none none reverse"
-      },
-      y: 0,
-      opacity: 1,
-      duration: 1,
-      ease: "power2.out"
-    });
+    gsap.to(text, { scrollTrigger: { trigger: text, start: "top 85%", toggleActions: "play none none reverse" }, y: 0, opacity: 1, duration: 1, ease: "power2.out" });
   });
 
-  // C. Gold Curtain Reveal (The Fix)
-  // This triggers the CSS class .active on the CONTAINER
   gsap.utils.toArray('.curtain-reveal').forEach(revealItem => {
-    ScrollTrigger.create({
-      trigger: revealItem,
-      start: "top 75%",
-      onEnter: () => revealItem.classList.add('active') 
-    });
+    ScrollTrigger.create({ trigger: revealItem, start: "top 75%", onEnter: () => revealItem.classList.add('active') });
   });
-
-
 
 
   // =========================================================
-  // 4. MUSIC PLAYER LOGIC (Auto-Play with Browser Policy Fix)
+  // 4. MUSIC PLAYER LOGIC
   // =========================================================
   const musicBtn = document.getElementById("music-control");
   const audio = document.getElementById("bg-music");
   let isPlaying = false;
 
   if (musicBtn && audio) {
-    
-    // Function to update UI (Wave Animation)
     const updateMusicUI = (playing) => {
       if (playing) {
         musicBtn.classList.remove("opacity-50");
@@ -225,193 +114,188 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
 
-    // 1. Manual Toggle (Clicking the icon)
     musicBtn.addEventListener("click", () => {
-      if (isPlaying) {
-        audio.pause();
-        isPlaying = false;
-      } else {
-        audio.play();
-        isPlaying = true;
-      }
+      if (isPlaying) { audio.pause(); isPlaying = false; } 
+      else { audio.play(); isPlaying = true; }
       updateMusicUI(isPlaying);
     });
 
-    // 2. Intelligent Auto-Play Strategy
-    // Attempt to play immediately when page loads
     const playPromise = audio.play();
-
     if (playPromise !== undefined) {
-      playPromise.then(() => {
-        // Auto-play started successfully!
-        isPlaying = true;
-        updateMusicUI(true);
-      }).catch(error => {
-        // Auto-play was blocked by browser. 
-        // We wait for the FIRST user interaction (scroll or click) to start it.
-        console.log("Autoplay prevented. Waiting for interaction.");
-        
+      playPromise.then(() => { isPlaying = true; updateMusicUI(true); })
+      .catch(() => {
         const startOnInteraction = () => {
-          audio.play();
-          isPlaying = true;
-          updateMusicUI(true);
-          
-          // Remove listeners so it doesn't try to play again
+          audio.play(); isPlaying = true; updateMusicUI(true);
           document.removeEventListener('click', startOnInteraction);
           document.removeEventListener('scroll', startOnInteraction);
-          document.removeEventListener('touchstart', startOnInteraction);
         };
-
         document.addEventListener('click', startOnInteraction);
         document.addEventListener('scroll', startOnInteraction);
-        document.addEventListener('touchstart', startOnInteraction);
       });
     }
   }
 
 
   // =========================================================
-  // 5. LIVE COUNTDOWN TIMER (IST Fixed)
+  // 5. LIVE COUNTDOWN TIMER
   // =========================================================
-  
-  // Set date to March 8, 2026 11:11 AM IST (+05:30)
   const weddingDate = new Date("2026-03-08T11:11:00+05:30").getTime();
-
   function updateTimer() {
     const now = new Date().getTime();
     const distance = weddingDate - now;
-
     if (distance > 0) {
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      // Helper for leading zeros
       const fmt = (n) => n < 10 ? "0" + n : n;
-
-      const dEl = document.getElementById("days");
-      const hEl = document.getElementById("hours");
-      const mEl = document.getElementById("minutes");
-      const sEl = document.getElementById("seconds");
-
-      if (dEl) dEl.innerText = fmt(days);
-      if (hEl) hEl.innerText = fmt(hours);
-      if (mEl) mEl.innerText = fmt(minutes);
-      if (sEl) sEl.innerText = fmt(seconds);
+      const dEl = document.getElementById("days"); if (dEl) dEl.innerText = fmt(days);
+      const hEl = document.getElementById("hours"); if (hEl) hEl.innerText = fmt(hours);
+      const mEl = document.getElementById("minutes"); if (mEl) mEl.innerText = fmt(minutes);
+      const sEl = document.getElementById("seconds"); if (sEl) sEl.innerText = fmt(seconds);
     }
   }
-
-  // Update immediately and then every second
-  updateTimer();
-  setInterval(updateTimer, 1000);
+  updateTimer(); setInterval(updateTimer, 1000);
 
 
   // =========================================================
-  // 6. VISITOR COUNTER (Simulation)
+  // 6. VISITOR COUNTER
   // =========================================================
   const countEl = document.getElementById('visit-count');
   if (countEl) {
-    // Check localStorage for existing hits, else start at a realistic number
-    let views = localStorage.getItem('page_views');
-    
-    if (!views) {
-      views = 842; // Starting number
-    } else {
-      views = parseInt(views) + 1; // Increment on reload
-    }
-    
+    let views = localStorage.getItem('page_views') || 842;
+    views = parseInt(views) + 1;
     localStorage.setItem('page_views', views);
     countEl.innerText = views.toLocaleString();
   }
 
 
   // =========================================================
-  // 7. SMART RSVP FORM
+  // 7. JOYFUL RSVP FORM (Starts from 5)
   // =========================================================
   const rsvpForm = document.getElementById('rsvp-form');
-  const guestDisplay = document.getElementById('guest-count');
-  const guestInput = document.getElementById('guests-input');
-  let guests = 1;
+  const guestDropdown = document.getElementById('guests-dropdown');
+  const manualWrapper = document.getElementById('manual-guest-wrapper');
+  const manualInput = document.getElementById('guests-manual');
+  const submitBtn = document.getElementById('submit-btn');
+  const statusMsg = document.getElementById('form-status');
 
-  // Counter
-  if (document.getElementById('plus')) {
-    document.getElementById('plus').onclick = () => { if (guests < 10) { guests++; updateG(); } };
-    document.getElementById('minus').onclick = () => { if (guests > 1) { guests--; updateG(); } };
-    function updateG() { guestDisplay.innerText = guests; guestInput.value = guests; }
+  // A. Handle "More than 5" Dropdown Logic
+  if (guestDropdown) {
+    guestDropdown.addEventListener('change', function() {
+      if (this.value === 'more') {
+        manualWrapper.classList.remove('grid-rows-[0fr]');
+        manualWrapper.classList.add('grid-rows-[1fr]');
+        manualInput.required = true;
+        manualInput.focus();
+      } else {
+        manualWrapper.classList.remove('grid-rows-[1fr]');
+        manualWrapper.classList.add('grid-rows-[0fr]');
+        manualInput.required = false;
+        manualInput.value = ''; 
+      }
+    });
   }
 
-  // Submission
+  // B. Handle Form Submission
   if (rsvpForm) {
-    rsvpForm.onsubmit = async (e) => {
+    rsvpForm.addEventListener('submit', async function(e) {
       e.preventDefault();
-      const status = document.getElementById('rsvp-status');
-      const btn = rsvpForm.querySelector('button[type="submit"]');
-      const originalText = btn.innerText;
 
-      btn.innerText = "Sending Response...";
-      btn.disabled = true;
+      if (!supabaseClient) {
+        alert("Please set up Supabase and add your API Keys in assets/js/script.js");
+        return;
+      }
 
-      const formData = new FormData(rsvpForm);
-      const payload = {
-        full_name: formData.get('full_name'),
-        phone: formData.get('phone'),
-        side: formData.get('side'),
-        guests: parseInt(formData.get('guests')),
-        attending_marriage: formData.get('event_marriage') === 'on',
-        attending_reception: formData.get('event_reception') === 'on',
-        timestamp: new Date().toISOString()
+      // UI Loading State
+      const originalText = submitBtn.innerText;
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Processing...";
+      submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      statusMsg.classList.add('hidden');
+
+      // 1. Get Phone & Country Code
+      const countryCode = document.getElementById('country-code').value;
+      const phoneNumber = document.getElementById('phone-number').value;
+
+      // 2. Determine Guest Count (Dropdown or Manual?)
+      let finalGuestCount = guestDropdown.value;
+      if (finalGuestCount === 'more') {
+        finalGuestCount = manualInput.value;
+        // 🛑 FIXED: Now allows 5 or more (previously blocked < 6)
+        if (!finalGuestCount || finalGuestCount < 5) {
+          alert("Please enter a valid number of guests (5 or more).");
+          resetButton();
+          return;
+        }
+      }
+
+      // 3. Get Side (Bride or Groom)
+      const sideSelection = document.querySelector('input[name="side"]:checked');
+      if (!sideSelection) {
+        alert("Please select if you are from the Bride's family or Groom's family.");
+        resetButton();
+        return;
+      }
+
+      // 4. Build Data Object
+      const formData = {
+        name: document.getElementById('name').value,
+        contact: `${countryCode} ${phoneNumber}`,
+        side: sideSelection.value,
+        guests: parseInt(finalGuestCount),
+        attending: "Yes" // Auto-set to YES
       };
 
+      // 5. Send to Supabase
       try {
-        if (supabaseClient) {
-          // Real DB
-          const { error } = await supabaseClient.from('rsvps').insert([payload]);
-          if (error) throw error;
-          showSuccess(payload.full_name);
-        } else {
-          // Simulation
-          await new Promise(r => setTimeout(r, 1500));
-          showSuccess(payload.full_name);
-        }
-      } catch (err) {
-        console.error(err);
-        status.innerText = "Connection error. Please try again.";
-        status.style.color = "red";
-        btn.innerText = originalText;
-        btn.disabled = false;
+        const { data, error } = await supabaseClient
+          .from('rsvps')
+          .insert([formData]);
+
+        if (error) throw error;
+
+        // Success State
+        statusMsg.textContent = "✨ Thank you! We have received your RSVP.";
+        statusMsg.className = "text-center text-sm font-medium mt-4 text-green-600 block";
+        submitBtn.textContent = "Confirmed ✓";
+        submitBtn.classList.remove('bg-gradient-to-r'); // Remove gold gradient
+        submitBtn.classList.add('bg-green-600'); // Make it green
+        
+        rsvpForm.reset();
+        
+        // Reset animations
+        manualWrapper.classList.remove('grid-rows-[1fr]');
+        manualWrapper.classList.add('grid-rows-[0fr]');
+
+        // Reset button after 3 seconds
+        setTimeout(() => {
+            resetButton();
+        }, 3000);
+
+      } catch (error) {
+        console.error('Error:', error);
+        statusMsg.textContent = "❌ Connection failed. Please try again.";
+        statusMsg.className = "text-center text-sm font-medium mt-4 text-red-600 block";
+        resetButton();
       }
 
-      function showSuccess(name) {
-        rsvpForm.reset();
-        guests = 1; updateG();
-        btn.innerText = "Confirmed ✓";
-        btn.style.backgroundColor = "#D4AF37";
-        btn.style.borderColor = "#D4AF37";
-        status.innerText = `Thank you, ${name}! We can't wait to see you.`;
-        status.style.color = "#D4AF37";
-        
-        setTimeout(() => {
-          btn.disabled = false;
-          btn.innerText = originalText;
-          btn.style.backgroundColor = "";
-          btn.style.borderColor = "";
-          status.innerText = "";
-        }, 5000);
+      function resetButton() {
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalText;
+        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-green-600');
+        submitBtn.classList.add('bg-gradient-to-r'); // Add back gold gradient
       }
-    };
+    });
   }
 
-// test
+
   // =========================================================
   // 8. UTILITIES (Cursor)
   // =========================================================
   const cursor = document.getElementById('cursor-dot');
   if (cursor) {
-    window.addEventListener('mousemove', e => {
-      gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
-    });
-    
+    window.addEventListener('mousemove', e => gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 }));
     document.querySelectorAll('a, button, input, label, .group').forEach(el => {
       el.addEventListener('mouseenter', () => gsap.to(cursor, { scale: 3, opacity: 0.4 }));
       el.addEventListener('mouseleave', () => gsap.to(cursor, { scale: 1, opacity: 1 }));
@@ -420,26 +304,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-// SMART AUDIO MANAGER
+// =========================================================
+// 9. EXTERNAL EVENTS (Visibility & Audio)
+// =========================================================
+
+// Smart Audio Manager (Pause when tab hidden)
 document.addEventListener('visibilitychange', function() {
     const audio = document.getElementById('bg-music');
-    
-    // Safety check: make sure audio exists
     if (!audio) return;
-
     if (document.hidden) {
-        // User minimized or switched tabs -> PAUSE
         audio.pause();
-        // Optional: Change icon to 'play' state if you have a toggle button
-        // updateIconState(false); 
     } else {
-        // User came back -> PLAY (only if they haven't manually stopped it)
-        // We wrap this in a promise because browsers block auto-play sometimes
         var playPromise = audio.play();
         if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.log("Auto-resume prevented by browser");
-            });
+            playPromise.catch(() => console.log("Auto-resume prevented"));
         }
     }
 });
+
+// Reset Music Button when song ends
+const audioEl = document.getElementById('bg-music');
+const musicBtnEl = document.getElementById('music-control'); // ID matched to top variable
+if(audioEl && musicBtnEl) {
+    audioEl.addEventListener('ended', function() {
+        const icon = musicBtnEl.querySelector('i');
+        if(icon) {
+            icon.classList.remove('fa-pause');
+            icon.classList.add('fa-music');
+        }
+    });
+}
