@@ -419,3 +419,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 });
+
+// SMART AUDIO MANAGER
+document.addEventListener('visibilitychange', function() {
+    const audio = document.getElementById('bg-music');
+    
+    // Safety check: make sure audio exists
+    if (!audio) return;
+
+    if (document.hidden) {
+        // User minimized or switched tabs -> PAUSE
+        audio.pause();
+        // Optional: Change icon to 'play' state if you have a toggle button
+        // updateIconState(false); 
+    } else {
+        // User came back -> PLAY (only if they haven't manually stopped it)
+        // We wrap this in a promise because browsers block auto-play sometimes
+        var playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log("Auto-resume prevented by browser");
+            });
+        }
+    }
+});
