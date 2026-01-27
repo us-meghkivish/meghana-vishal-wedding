@@ -1,30 +1,60 @@
 document.addEventListener("DOMContentLoaded", () => {
+  
+  // =========================================================
+  // 1. SETUP & CONFIGURATION
+  // =========================================================
   gsap.registerPlugin(ScrollTrigger);
-  const SB_URL = 'YOUR_URL'; const SB_KEY = 'YOUR_KEY'; // Placeholder
 
-  // --- I18N DICTIONARY ---
+  // SUPABASE CONFIGURATION
+  // If you want to save RSVPs to a real database, add your keys here.
+  const SB_URL = 'YOUR_SUPABASE_URL_HERE';
+  const SB_KEY = 'YOUR_SUPABASE_KEY_HERE';
+  
+  let supabaseClient = null;
+  try {
+    if (typeof supabase !== 'undefined' && SB_URL.startsWith('https://')) {
+      supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+    }
+  } catch (err) {
+    console.log("Supabase not configured. Running in simulation mode.");
+  }
+
+
+  // =========================================================
+  // 2. LANGUAGE & TRANSLATIONS (I18N)
+  // =========================================================
+  const langBtn = document.getElementById("lang-toggle");
+  let currentLang = "en";
+
   const content = {
     en: {
+      // Navigation
       nav_story: "Our Story",
       nav_gallery: "Gallery",
       nav_albums: "Albums",
       nav_rsvp: "RSVP",
+      
+      // Hero
       hero_tagline: "We Are Getting Married",
       label_days: "Days", label_hours: "Hrs", label_minutes: "Mins",
       
+      // Story (Trendy Version)
       story_label: "How It Happened",
       story_title: "It Wasn't Love at First Sight...",
       story_p1: "It started with a casual coffee that turned into a 4-hour conversation. We didn't realize it then, but amidst the debates about movies and shared laughter over bad jokes, we were finding our home in each other.",
       story_p2: "From long drives with no destination to quiet moments that said everything, our bond grew stronger every day. Now, with the blessings of our families, we are ready to turn our \"best friendship\" into a \"forever partnership.\"",
       story_quote: "\"Everything makes sense when we're together.\"",
       
+      // Gallery
       gallery_title: "Captured Moments",
       gallery_sub: "Glimpses of our journey",
       
+      // Albums
       albums_title: "Celebrations",
       album_haldi: "Haldi",
       album_sangeet: "Sangeet",
       
+      // RSVP Section
       rsvp_title: "RSVP",
       rsvp_deadline: "Please respond by Feb 15, 2026",
       rsvp_name: "Full Name",
@@ -39,26 +69,33 @@ document.addEventListener("DOMContentLoaded", () => {
       rsvp_btn: "Confirm Attendance"
     },
     te: {
+      // Navigation
       nav_story: "మా కథ",
-      nav_gallery: "చిత్రమాలిక",
+      nav_gallery: "జ్ఞాపకాలు",
       nav_albums: "వేడుకలు",
       nav_rsvp: "ఆహ్వానం",
+      
+      // Hero
       hero_tagline: "మేము ఒక్కటవుతున్నాము",
       label_days: "రోజులు", label_hours: "గంటలు", label_minutes: "నిమిషాలు",
       
+      // Story (Trendy Version translated)
       story_label: "మా ప్రయాణం",
       story_title: "ఇది తొలిచూపు ప్రేమ కాదు...",
-      story_p1: "మా కథ ఒక సాధారణ కాఫీతో మొదలైంది. సినిమాల గురించి చర్చలు, చిన్న చిన్న జోకులు... మాకు తెలియకుండానే మేము ఒకరికొకరం దగ్గరయ్యాం.",
+      story_p1: "మా పరిచయం ఒక సాధారణ కాఫీతో మొదలైంది. సినిమాల గురించి చర్చలు, చిన్న చిన్న జోకులు... మాకు తెలియకుండానే మేము ఒకరికొకరం దగ్గరయ్యాం.",
       story_p2: "గమ్యం లేని ప్రయాణాలు, మౌనంగా సాగిన సంభాషణలు... మా బంధం బలపడింది. ఇప్పుడు, పెద్దల ఆశీర్వాదంతో, మా స్నేహాన్ని పెళ్లి బంధంగా మార్చుకుంటున్నాం.",
       story_quote: "\"మేము కలిసున్నప్పుడు ప్రపంచం అందంగా కనిపిస్తుంది.\"",
       
+      // Gallery
       gallery_title: "మధుర క్షణాలు",
       gallery_sub: "మా ప్రయాణంలోని కొన్ని దృశ్యాలు",
       
+      // Albums
       albums_title: "వేడుకలు",
       album_haldi: "హల్దీ",
       album_sangeet: "సంగీత్",
       
+      // RSVP Section
       rsvp_title: "ఆహ్వానం",
       rsvp_deadline: "దయచేసి ఫిబ్రవరి 15, 2026 లోపు తెలియజేయండి",
       rsvp_name: "పూర్తి పేరు",
@@ -74,58 +111,227 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // --- ANIMATIONS ---
-  gsap.to(".animate-fade-in-up", { y: 0, opacity: 1, duration: 1.2, stagger: 0.2, ease: "power3.out", delay: 0.2 });
-  gsap.utils.toArray('.reveal-text').forEach(text => {
-    gsap.to(text, { scrollTrigger: { trigger: text, start: "top 85%" }, y: 0, opacity: 1, duration: 1 });
-  });
-  gsap.utils.toArray('.curtain-reveal').forEach(el => {
-    ScrollTrigger.create({ trigger: el, start: "top 75%", onEnter: () => el.classList.add('reveal-active') });
-  });
-
-  // --- LANGUAGE SWITCHER ---
-  const langBtn = document.getElementById("lang-toggle");
-  let currentLang = "en";
+  // Logic to switch languages
   if (langBtn) {
-    langBtn.onclick = () => {
+    langBtn.addEventListener("click", () => {
       currentLang = currentLang === "en" ? "te" : "en";
+      
+      // Animate transition of text
       document.querySelectorAll("[data-i18n]").forEach(el => {
         gsap.to(el, { opacity: 0, duration: 0.2, onComplete: () => {
-          el.innerHTML = content[currentLang][el.getAttribute("data-i18n")];
+          const key = el.getAttribute("data-i18n");
+          if (content[currentLang][key]) {
+            el.innerHTML = content[currentLang][key];
+          }
           gsap.to(el, { opacity: 1, duration: 0.2 });
         }});
       });
+      
+      // Update Button Text
       langBtn.innerText = currentLang === "en" ? "EN / తెలుగు" : "తెలుగు / EN";
-    };
+    });
   }
 
-  // --- MUSIC ---
+
+  // =========================================================
+  // 3. CINEMATIC ANIMATIONS (GSAP)
+  // =========================================================
+  
+  // A. Hero Text Staggered Entry
+  const heroTl = gsap.timeline();
+  heroTl.to(".animate-fade-in-up", {
+    y: 0,
+    opacity: 1,
+    duration: 1.2,
+    stagger: 0.2,
+    ease: "power3.out",
+    delay: 0.2
+  });
+
+  // B. Story Text "Rising" Reveal on Scroll
+  gsap.utils.toArray('.reveal-text').forEach(text => {
+    gsap.to(text, {
+      scrollTrigger: {
+        trigger: text,
+        start: "top 85%", 
+        toggleActions: "play none none reverse"
+      },
+      y: 0,
+      opacity: 1,
+      duration: 1,
+      ease: "power2.out"
+    });
+  });
+
+  // C. The Gold Curtain Reveal Effect (Important!)
+  gsap.utils.toArray('.curtain-reveal').forEach(revealItem => {
+    ScrollTrigger.create({
+      trigger: revealItem,
+      start: "top 75%", // Triggers when element is 75% down the viewport
+      onEnter: () => revealItem.classList.add('active') // Adds class to trigger CSS transition
+    });
+  });
+
+
+  // =========================================================
+  // 4. MUSIC PLAYER LOGIC
+  // =========================================================
   const musicBtn = document.getElementById("music-control");
   const audio = document.getElementById("bg-music");
   let isPlaying = false;
-  musicBtn.onclick = () => {
-    if(isPlaying) { audio.pause(); musicBtn.classList.add("opacity-50"); }
-    else { audio.play(); musicBtn.classList.remove("opacity-50"); }
-    isPlaying = !isPlaying;
-  };
-  document.addEventListener('click', () => { if(!isPlaying) { audio.play().then(() => isPlaying=true).catch(()=>{}); } }, {once:true});
 
-  // --- COUNTDOWN ---
+  if (musicBtn && audio) {
+    // 1. Manual Toggle
+    musicBtn.addEventListener("click", () => {
+      if (isPlaying) {
+        audio.pause();
+        musicBtn.classList.add("opacity-50"); // Dim button
+      } else {
+        audio.play().catch(e => console.log("Audio requires interaction"));
+        musicBtn.classList.remove("opacity-50"); // Brighten button
+      }
+      isPlaying = !isPlaying;
+    });
+
+    // 2. Auto-play attempt on first user interaction (Scroll or Click)
+    const attemptAutoplay = () => {
+      if (!isPlaying) {
+        audio.play().then(() => {
+          isPlaying = true;
+          musicBtn.classList.remove("opacity-50");
+        }).catch(() => {});
+        // Remove listeners once tried
+        document.removeEventListener('click', attemptAutoplay);
+        document.removeEventListener('scroll', attemptAutoplay);
+      }
+    };
+    document.addEventListener('click', attemptAutoplay);
+    document.addEventListener('scroll', attemptAutoplay);
+  }
+
+
+  // =========================================================
+  // 5. SMART RSVP FORM
+  // =========================================================
+  const rsvpForm = document.getElementById('rsvp-form');
+  const guestDisplay = document.getElementById('guest-count');
+  const guestInput = document.getElementById('guests-input');
+  let guests = 1;
+
+  // Counter Logic
+  if (document.getElementById('plus')) {
+    document.getElementById('plus').onclick = () => { 
+      if (guests < 10) { guests++; updateG(); } 
+    };
+    document.getElementById('minus').onclick = () => { 
+      if (guests > 1) { guests--; updateG(); } 
+    };
+    function updateG() { 
+      guestDisplay.innerText = guests; 
+      guestInput.value = guests; 
+    }
+  }
+
+  // Form Submission Logic
+  if (rsvpForm) {
+    rsvpForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const status = document.getElementById('rsvp-status');
+      const btn = rsvpForm.querySelector('button[type="submit"]');
+      const originalText = btn.innerText;
+
+      // UI Feedback: Loading
+      btn.innerText = "Sending Response...";
+      btn.disabled = true;
+
+      const formData = new FormData(rsvpForm);
+      const payload = {
+        full_name: formData.get('full_name'),
+        phone: formData.get('phone'),
+        side: formData.get('side'),
+        guests: parseInt(formData.get('guests')),
+        attending_marriage: formData.get('event_marriage') === 'on',
+        attending_reception: formData.get('event_reception') === 'on',
+        timestamp: new Date().toISOString()
+      };
+
+      try {
+        if (supabaseClient) {
+          // Send to Real Database
+          const { error } = await supabaseClient.from('rsvps').insert([payload]);
+          if (error) throw error;
+          showSuccess(payload.full_name);
+        } else {
+          // Simulation (No DB connected)
+          console.log("RSVP Submitted:", payload);
+          await new Promise(r => setTimeout(r, 1500)); // Fake 1.5s delay
+          showSuccess(payload.full_name);
+        }
+      } catch (err) {
+        console.error(err);
+        status.innerText = "Error sending. Please check your internet connection.";
+        status.style.color = "red";
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }
+
+      function showSuccess(name) {
+        rsvpForm.reset();
+        guests = 1; updateG();
+        
+        // Change button to success state
+        btn.innerText = "Confirmed ✓";
+        btn.style.backgroundColor = "#D4AF37";
+        btn.style.borderColor = "#D4AF37";
+        
+        status.innerText = `Thank you, ${name}! Your response has been recorded.`;
+        status.style.color = "#D4AF37";
+        
+        // Reset button state after 5 seconds
+        setTimeout(() => {
+          btn.disabled = false;
+          btn.innerText = originalText;
+          btn.style.backgroundColor = "";
+          btn.style.borderColor = "";
+          status.innerText = "";
+        }, 5000);
+      }
+    };
+  }
+
+
+  // =========================================================
+  // 6. COUNTDOWN TIMER
+  // =========================================================
+  const weddingDate = new Date("March 8, 2026 11:11:00").getTime();
+
   setInterval(() => {
-    const gap = new Date('March 8, 2026 11:11:00').getTime() - new Date().getTime();
-    if(gap > 0) {
-       document.getElementById("days").innerText = Math.floor(gap / 86400000);
-       document.getElementById("hours").innerText = Math.floor((gap % 86400000) / 3600000);
-       document.getElementById("minutes").innerText = Math.floor((gap % 3600000) / 60000);
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
+
+    if (distance > 0) {
+      document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+      document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     }
   }, 1000);
 
-  // --- RSVP COUNTER ---
-  let gCount = 1;
-  document.getElementById('plus').onclick = () => { if(gCount<10) { gCount++; document.getElementById('guest-count').innerText = gCount; } };
-  document.getElementById('minus').onclick = () => { if(gCount>1) { gCount--; document.getElementById('guest-count').innerText = gCount; } };
 
-  // --- UTILS ---
+  // =========================================================
+  // 7. UTILITIES (Custom Cursor)
+  // =========================================================
   const cursor = document.getElementById('cursor-dot');
-  window.addEventListener('mousemove', e => gsap.to(cursor, {x: e.clientX, y: e.clientY, duration: 0.1}));
+  if (cursor) {
+    window.addEventListener('mousemove', e => {
+      gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
+    });
+    
+    // Expand cursor on clickable items
+    const clickables = document.querySelectorAll('a, button, input, label, .group');
+    clickables.forEach(el => {
+      el.addEventListener('mouseenter', () => gsap.to(cursor, { scale: 3, opacity: 0.4 }));
+      el.addEventListener('mouseleave', () => gsap.to(cursor, { scale: 1, opacity: 1 }));
+    });
+  }
+
 });

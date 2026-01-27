@@ -12,7 +12,6 @@ html {
 }
 
 body {
-  /* Font fallback is handled in HTML, this ensures consistency */
   font-family: 'Poppins', sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -21,6 +20,16 @@ body {
 
 h1, h2, h3, .font-serif {
   font-family: 'Cinzel', serif;
+}
+
+.font-signature {
+  font-family: 'Great Vibes', cursive;
+}
+
+/* Custom Selection Color */
+::selection {
+  background: var(--gold);
+  color: white;
 }
 
 /* Custom Scrollbar */
@@ -43,21 +52,6 @@ h1, h2, h3, .font-serif {
    2. CINEMATIC EFFECTS
    ========================================= */
 
-/* Film Grain Overlay */
-/* Note: The SVG data is inline in HTML for performance, 
-   but this class handles positioning */
-.noise-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 5;
-  opacity: 0.05;
-  mix-blend-mode: overlay;
-}
-
 /* Custom Gold Cursor */
 #cursor-dot {
   width: 12px;
@@ -72,34 +66,17 @@ h1, h2, h3, .font-serif {
   mix-blend-mode: difference;
 }
 
-/* Hover state for cursor (optional, requires JS trigger) */
+/* Hover state expansion */
 body.hovering #cursor-dot {
   transform: translate(-50%, -50%) scale(4);
   opacity: 0.2;
 }
 
 /* =========================================
-   3. HERO ANIMATIONS
+   3. ANIMATIONS
    ========================================= */
 
-/* "Ken Burns" Slow Zoom Effect */
-.animate-zoom {
-  animation: zoom-in 25s infinite alternate ease-in-out;
-}
-
-@keyframes zoom-in {
-  0% { transform: scale(1); }
-  100% { transform: scale(1.15); }
-}
-
-/* Initial States for GSAP Reveals */
-.reveal-text, 
-.animate-fade-in-up {
-  /* JS will handle opacity, but we ensure it starts hidden */
-  opacity: 0; 
-  transform: translateY(20px);
-}
-
+/* Hero Text Fade Up */
 @keyframes fadeInUp {
   to {
     opacity: 1;
@@ -107,13 +84,20 @@ body.hovering #cursor-dot {
   }
 }
 
-/* Pure CSS Fallback for Hero Fade In */
 .animate-fade-in-up {
+  opacity: 0;
+  transform: translateY(20px);
   animation: fadeInUp 1s ease-out forwards;
 }
 
+/* Reveal Text Class (Triggered by GSAP) */
+.reveal-text {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
 /* =========================================
-   4. CURTAIN REVEAL (THE "SHOCKING" EFFECT)
+   4. CURTAIN REVEAL (FIXED)
    ========================================= */
 
 .curtain-reveal {
@@ -132,8 +116,8 @@ body.hovering #cursor-dot {
   transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-/* Class added by ScrollTrigger in JS */
-.reveal-active .curtain {
+/* FIX: This now correctly targets the curtain when the parent is active */
+.curtain-reveal.active .curtain {
   transform: scaleY(0);
   transform-origin: top;
 }
@@ -142,61 +126,18 @@ body.hovering #cursor-dot {
    5. ALBUM STACKS
    ========================================= */
 
-.album-stack {
-  position: relative;
-  width: 220px;
-  height: 280px;
-  margin: 0 auto;
-  perspective: 1000px;
-}
-
-/* Base style for all photos in stack */
-.photo-back, .photo-mid, .photo-front {
-  position: absolute;
-  inset: 0;
-  background: #fff;
-  border: 6px solid #fff;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-  border-radius: 4px;
-}
-
-/* Initial messy stack positions */
-.photo-back { 
-  transform: rotate(-6deg); 
-  z-index: 1; 
-  background-color: #f0f0f0;
-}
-.photo-mid { 
-  transform: rotate(6deg); 
-  z-index: 2; 
-  background-color: #f8f8f8;
-}
-.photo-front { 
-  transform: rotate(0deg); 
-  z-index: 3; 
-  overflow: hidden;
-}
-
-/* Hover Effects: Fan them out */
-.group:hover .photo-back {
-  transform: translate(-15px, -5px) rotate(-12deg);
-}
-.group:hover .photo-mid {
-  transform: translate(15px, -5px) rotate(12deg);
-}
-.group:hover .photo-front {
-  transform: scale(1.05);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-}
-
-/* Hide Scrollbar for Mobile Album Container */
+/* Hide scrollbar for the horizontal scroll container */
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
 .scrollbar-hide {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+}
+
+.group:hover .transform {
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* =========================================
@@ -204,10 +145,10 @@ body.hovering #cursor-dot {
    ========================================= */
 
 .bar {
-  width: 3px;
+  width: 2px;
   background-color: var(--gold);
   border-radius: 2px;
-  /* Default animation */
+  /* Default animation state */
   animation: eq-bounce 1s infinite ease-in-out;
 }
 
@@ -218,31 +159,35 @@ body.hovering #cursor-dot {
 
 @keyframes eq-bounce {
   0%, 100% { height: 4px; }
-  50% { height: 16px; }
+  50% { height: 12px; }
 }
 
-/* Pause state (optional if you add JS logic to pause animation) */
-.paused .bar {
+/* State when music is paused */
+.opacity-50 .bar {
   animation-play-state: paused;
-  height: 4px !important;
+  height: 2px !important;
 }
 
 /* =========================================
-   7. FORM & UTILS
+   7. FORM ELEMENTS
    ========================================= */
 
-/* Remove default focus outline, use border color instead */
 input:focus {
   outline: none;
 }
 
-/* Radio button styling tweaks */
-input[type="radio"]:checked + div {
-  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4);
-}
-
-/* Checkbox Accent Color Override for Webkit */
+/* Custom Checkbox Color */
 input[type="checkbox"] {
   accent-color: var(--gold);
   cursor: pointer;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Radio Button Hover Effect */
+input[type="radio"]:checked + div {
+  background-color: var(--gold);
+  color: white;
+  border-color: var(--gold);
+  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4);
 }
