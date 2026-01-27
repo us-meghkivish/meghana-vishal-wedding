@@ -2,365 +2,302 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Meghana & Vishal — Our Wedding</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Meghana & Vishal — The Wedding</title>
 
-  <meta name="description" content="Join us as Meghana & Vishal celebrate their wedding — March 6–8, 2026. RSVP for Marriage and Reception." />
-  <meta property="og:title" content="Meghana & Vishal — Our Wedding" />
-  <meta property="og:description" content="You're invited! RSVP for Marriage & Reception." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://i.imgur.com/H80QkmD.jpeg" />
-  <meta property="og:image:alt" content="Meghana & Vishal" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <link rel="icon" href="assets/icons/favicon.svg">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Tangerine:wght@700&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
-
-  <!-- Tailwind via CDN (fine for Pages; warning is OK for now) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Poppins:wght@300;400;500&family=Great+Vibes&display=swap" rel="stylesheet">
+  
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- GSAP (for micro-animations on the language switch, etc.) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-
-  <!-- Supabase SDK (MUST be before script.js) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <!-- Your site styles (keep your existing CSS file) -->
+  
   <link rel="stylesheet" href="assets/css/style.css" />
-  <!-- Your main script (below) -->
   <script src="assets/js/script.js" defer></script>
+
+  <style>
+    body { font-family: 'Poppins', sans-serif; }
+    h1, h2, h3, .font-serif { font-family: 'Cinzel', serif; }
+    .font-signature { font-family: 'Great Vibes', cursive; }
+    
+    /* Animation Helpers */
+    .curtain-reveal { position: relative; overflow: hidden; }
+    .curtain { position: absolute; inset: 0; background: #D4AF37; z-index: 20; transform: scaleY(1); transform-origin: bottom; transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1); }
+    .curtain.active { transform: scaleY(0); transform-origin: top; }
+  </style>
 </head>
-<body class="antialiased">
 
-  <div id="cursor-dot"></div>
+<body class="bg-[#Fdf8f5] text-[#2c2c2c] antialiased overflow-x-hidden selection:bg-[#D4AF37] selection:text-white">
 
-  <header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50">
-    <nav class="container mx-auto px-6 py-5 flex justify-between items-center">
-      <a href="#" aria-label="Home" class="w-24 h-24 text-[var(--text-charcoal)]">
-        <!-- Monogram SVG -->
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="currentColor" role="img" aria-labelledby="logoTitle logoDesc">
-          <title id="logoTitle">MV Monogram</title>
-          <desc id="logoDesc">Monogram logo with initials M and V and botanical wreath</desc>
-          <g text-anchor="middle" fill-rule="evenodd">
-            <text x="78" y="105" font-family="'Playfair Display', serif" font-size="60" text-anchor="end">M</text>
-            <path d="M100 50 V 120" stroke-width="1" fill="none"/>
-            <text x="122" y="105" font-family="'Playfair Display', serif" font-size="60" text-anchor="start">V</text>
-            <text x="100" y="145" font-family="'Poppins', sans-serif" font-size="12" letter-spacing="2" fill-opacity="0.8">MEGHANA & VISHAL</text>
-            <path d="M 50 155 C 70 170, 130 170, 150 155" fill="none" stroke-width="1" />
-            <path d="M 60 159 a 10 10 0 0 1 10 -5" fill="none" stroke-width="1"/>
-            <path d="M 80 165 a 10 10 0 0 1 10 -5" fill="none" stroke-width="1"/>
-            <path d="M 140 159 a 10 10 0 0 0 -10 -5" fill="none" stroke-width="1"/>
-            <path d="M 120 165 a 10 10 0 0 0 -10 -5" fill="none" stroke-width="1"/>
-          </g>
-        </svg>
-      </a>
+  <div class="fixed inset-0 pointer-events-none z-[100] opacity-[0.03]" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E');"></div>
+  
+  <div id="cursor-dot" class="hidden md:block fixed w-3 h-3 bg-[#D4AF37] rounded-full pointer-events-none z-[9999] mix-blend-difference"></div>
 
-      <!-- Desktop nav -->
-      <div class="hidden md:flex items-center space-x-8 text-sm tracking-wider uppercase">
-        <a href="#story"   class="nav-link" data-i18n="nav_story">Our Story</a>
-        <a href="#details" class="nav-link" data-i18n="nav_details">Details</a>
-        <a href="#gallery" class="nav-link" data-i18n="nav_gallery">Gallery</a>
-        <a href="#rsvp"    class="nav-link" data-i18n="nav_rsvp">RSVP</a>
+  <div id="music-control" class="fixed bottom-6 left-6 z-50 flex items-center gap-3 bg-white/10 backdrop-blur-md p-3 rounded-full border border-white/20 shadow-2xl cursor-pointer hover:scale-105 transition-transform group">
+    <div id="music-wave" class="flex gap-1 items-end h-4 px-1">
+      <span class="w-0.5 bg-[#D4AF37] h-2 group-hover:h-4 transition-all duration-300"></span>
+      <span class="w-0.5 bg-[#D4AF37] h-3 group-hover:h-2 transition-all duration-300 delay-75"></span>
+      <span class="w-0.5 bg-[#D4AF37] h-1 group-hover:h-3 transition-all duration-300 delay-150"></span>
+    </div>
+    <audio id="bg-music" loop src="assets/music/wedding-song.mp3"></audio>
+  </div>
 
-        <!-- Language Switch -->
-        <button id="lang-toggle"
-          class="relative group inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold tracking-wide
-                 transition-all duration-300 hover:shadow-md hover:-translate-y-[1px]"
-          aria-label="Toggle language">
-          <span class="i18n-static">EN</span>
-          <span class="relative inline-flex h-5 w-10 items-center rounded-full bg-[var(--accent-gold)]/25">
-            <span id="lang-thumb" class="absolute left-0.5 h-4 w-4 rounded-full bg-[var(--accent-gold)] shadow transition-all duration-300"></span>
-          </span>
-          <span class="i18n-static">తెలుగు</span>
-          <span class="pointer-events-none absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style="background: radial-gradient(60% 60% at 30% 30%, rgba(255,255,255,.35), transparent 60%);"></span>
-        </button>
-      </div>
-
-      <!-- Mobile menu button -->
-      <button id="mobile-menu-button" class="md:hidden flex items-center" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open Menu">
-        <svg class="w-6 h-6 text-[var(--text-charcoal)]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-      </button>
-    </nav>
-
-    <!-- Mobile dropdown -->
-    <div id="mobile-menu" class="hidden md:hidden px-6 pb-4" role="menu">
-      <a href="#story"   class="block py-2 uppercase text-sm" data-i18n="nav_story">Our Story</a>
-      <a href="#details" class="block py-2 uppercase text-sm" data-i18n="nav_details">Details</a>
-      <a href="#gallery" class="block py-2 uppercase text-sm" data-i18n="nav_gallery">Gallery</a>
-      <a href="#rsvp"    class="block py-2 uppercase text-sm" data-i18n="nav_rsvp">RSVP</a>
-
-      <!-- Language switch (mobile copy) -->
-      <div class="pt-3">
-        <button id="lang-toggle-mobile"
-          class="relative inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-semibold tracking-wide w-auto"
-          aria-label="Toggle language">
-          <span>EN</span>
-          <span class="relative inline-flex h-5 w-10 items-center rounded-full bg-[var(--accent-gold)]/25">
-            <span id="lang-thumb-mobile" class="absolute left-0.5 h-4 w-4 rounded-full bg-[var(--accent-gold)] shadow transition-all duration-300"></span>
-          </span>
-          <span>తెలుగు</span>
+  <nav class="fixed top-0 w-full z-50 bg-black/30 backdrop-blur-md border-b border-white/10 transition-all duration-500">
+    <div class="container mx-auto px-6 flex justify-between items-center h-20">
+      <a href="#" class="text-xl md:text-2xl font-serif font-bold tracking-[0.2em] text-white">M & V</a>
+      
+      <div class="flex items-center gap-8">
+        <div class="hidden md:flex gap-8 text-[11px] uppercase tracking-[0.2em] font-medium text-white/90">
+          <a href="#story" class="hover:text-[#D4AF37] transition-colors relative group" data-i18n="nav_story">Our Story</a>
+          <a href="#gallery" class="hover:text-[#D4AF37] transition-colors relative group" data-i18n="nav_gallery">Gallery</a>
+          <a href="#albums" class="hover:text-[#D4AF37] transition-colors relative group" data-i18n="nav_albums">Albums</a>
+          <a href="#rsvp" class="hover:text-[#D4AF37] transition-colors relative group" data-i18n="nav_rsvp">RSVP</a>
+        </div>
+        
+        <button id="lang-toggle" class="bg-white/10 border border-white/30 px-5 py-2 rounded-full text-[10px] uppercase tracking-widest text-white hover:bg-white hover:text-black transition-all">
+          EN / తెలుగు
         </button>
       </div>
     </div>
-  </header>
+  </nav>
 
-  <main>
-    <!-- HERO -->
-    <section id="hero" style="background-image: url('https://i.imgur.com/H80QkmD.jpeg');">
-      <div class="relative z-10 p-4">
-        <h1 class="text-6xl md:text-8xl lg:text-9xl font-serif fade-in-up">Meghana & Vishal</h1>
-        <p class="mt-4 text-lg md:text-xl tracking-widest uppercase fade-in-up delay-200" data-i18n="hero_tagline">Are getting married</p>
-        <p class="mt-2 text-md md:text-lg tracking-wider fade-in-up delay-400" data-i18n="hero_date">March 8, 2026</p>
-      </div>
-    </section>
-
-    <!-- COUNTDOWN -->
-    <section class="py-20 md:py-24 relative">
-      <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <svg class="w-24 h-auto text-[var(--accent-gold)] opacity-30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-      </div>
-      <div id="countdown" class="container mx-auto px-6 flex justify-center text-center space-x-4 md:space-x-8" aria-live="polite">
-        <div class="reveal"><div class="text-4xl md:text-6xl font-serif text-[var(--accent-gold)]" id="days">0</div><div class="text-sm uppercase tracking-widest mt-1" data-i18n="label_days">Days</div></div>
-        <div class="reveal"><div class="text-4xl md:text-6xl font-serif text-[var(--accent-gold)]" id="hours">0</div><div class="text-sm uppercase tracking-widest mt-1" data-i18n="label_hours">Hours</div></div>
-        <div class="reveal"><div class="text-4xl md:text-6xl font-serif text-[var(--accent-gold)]" id="minutes">0</div><div class="text-sm uppercase tracking-widest mt-1" data-i18n="label_minutes">Minutes</div></div>
-        <div class="reveal"><div class="text-4xl md:text-6xl font-serif text-[var(--accent-gold)]" id="seconds">0</div><div class="text-sm uppercase tracking-widest mt-1" data-i18n="label_seconds">Seconds</div></div>
-      </div>
-    </section>
-
-    <div class="section-divider">
-      <svg viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M99.5,2.5 C99.5,3.88071187 98.3807119,5 97,5 C95.6192881,5 94.5,3.88071187 94.5,2.5 C94.5,1.11928813 95.6192881,0 97,0 C98.3807119,0 99.5,1.11928813 99.5,2.5 Z M50,5 L92,5 M3,5 C1.61928813,5 0.5,3.88071187 0.5,2.5 C0.5,1.11928813 1.61928813,0 3,0 C4.38071187,0 5.5,1.11928813 5.5,2.5 C5.5,3.88071187 4.38071187,5 3,5 Z M8,5 L50,5" stroke="currentColor" stroke-width="1" stroke-linecap="round"></path></svg>
+  <section id="hero" class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+    <div class="absolute inset-0 bg-black/40 z-10"></div>
+    
+    <div class="absolute inset-0 w-full h-full bg-cover bg-center transition-transform duration-[20s] ease-in-out scale-100 hover:scale-110" 
+         style="background-image: url('assets/images/hero.jpg'); transform-origin: center;">
     </div>
+    
+    <div class="relative z-20 flex flex-col items-center text-center text-white px-4 w-full mt-10">
+      <p class="uppercase tracking-[0.4em] text-[10px] md:text-sm mb-6 opacity-0 animate-fade-in-up" data-i18n="hero_tagline" style="animation-delay: 0.2s; animation-fill-mode: forwards;">We Are Getting Married</p>
+      
+      <h1 class="text-4xl md:text-6xl lg:text-8xl font-serif mb-8 leading-tight opacity-0 animate-fade-in-up whitespace-nowrap" style="animation-delay: 0.5s; animation-fill-mode: forwards;">
+        Meghana <span class="text-[#D4AF37] font-[Poppins] font-light px-2">&</span> Vishal
+      </h1>
+      
+      <div class="h-[1px] w-20 bg-[#D4AF37] mb-8 opacity-0 animate-fade-in-up" style="animation-delay: 0.8s; animation-fill-mode: forwards;"></div>
+      
+      <p class="text-sm md:text-lg font-light tracking-[0.3em] opacity-0 animate-fade-in-up" style="animation-delay: 1s; animation-fill-mode: forwards;">
+        MARCH 8, 2026
+      </p>
+      
+      <div class="flex gap-8 mt-12 opacity-0 animate-fade-in-up" style="animation-delay: 1.2s; animation-fill-mode: forwards;">
+        <div class="text-center"><span id="days" class="block text-3xl md:text-5xl font-serif">00</span><span class="text-[8px] uppercase tracking-widest text-white/70" data-i18n="label_days">Days</span></div>
+        <div class="text-center"><span id="hours" class="block text-3xl md:text-5xl font-serif">00</span><span class="text-[8px] uppercase tracking-widest text-white/70" data-i18n="label_hours">Hrs</span></div>
+        <div class="text-center"><span id="minutes" class="block text-3xl md:text-5xl font-serif">00</span><span class="text-[8px] uppercase tracking-widest text-white/70" data-i18n="label_minutes">Mins</span></div>
+      </div>
+    </div>
+    
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+      <svg class="w-5 h-5 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+    </div>
+  </section>
 
-    <!-- STORY -->
-    <section id="story" class="py-20 md:py-24 bg-white/50">
-      <div class="container mx-auto px-6">
-        <div id="story-container" class="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-          <div class="reveal">
-            <h2 class="text-4xl md:text-5xl font-serif mb-6" data-i18n="our_story">Our Story</h2>
-            <p class="mb-4 text-gray-600 leading-relaxed" data-i18n="story_p1">
-              With the blessings of our parents and elders, we are taking our first step towards a new life. We are so excited to celebrate our love story with all of our cherished family and friends.
+  <section id="story" class="py-24 md:py-40 bg-[#Fdf8f5] overflow-hidden">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center gap-16 md:gap-32">
+        
+        <div class="w-full md:w-1/2">
+          <div class="overflow-hidden mb-3">
+            <h2 class="reveal-text text-[#D4AF37] text-xs uppercase tracking-[0.3em] font-bold" data-i18n="story_label">How It Happened</h2>
+          </div>
+          <div class="overflow-hidden mb-8">
+            <h3 class="reveal-text text-4xl md:text-6xl font-serif text-zinc-900 leading-tight" data-i18n="story_title">It Wasn't Love at First Sight...</h3>
+          </div>
+          
+          <div class="space-y-8 text-zinc-600 font-light leading-relaxed text-sm md:text-base text-justify">
+            <p class="reveal-text opacity-0" data-i18n="story_p1">
+              It started with a casual coffee that turned into a 4-hour conversation. We didn't realize it then, but amidst the debates about movies and shared laughter over bad jokes, we were finding our home in each other.
             </p>
-            <p class="text-gray-600 leading-relaxed" data-i18n="story_p2">
-              Your presence and blessings as we begin our journey together is the greatest gift of all.
+            <p class="reveal-text opacity-0" data-i18n="story_p2">
+              From long drives with no destination to quiet moments that said everything, our bond grew stronger every day. Now, with the blessings of our families, we are ready to turn our "best friendship" into a "forever partnership."
             </p>
+            
+            <div class="reveal-text opacity-0 pt-4">
+              <p class="font-signature text-4xl text-[#D4AF37]" data-i18n="story_quote">
+                "Everything makes sense when we're together."
+              </p>
+            </div>
           </div>
-          <div id="story-photos" class="relative aspect-square reveal">
-            <img id="bride-photo" src="https://i.imgur.com/M6svB16.jpeg" alt="Meghana" class="w-2/3 h-2/3 object-cover absolute top-0 left-0 shadow-xl transition-transform duration-1000 ease-out">
-            <img id="groom-photo" src="https://i.imgur.com/vgfhVcm.jpeg" alt="Vishal" class="w-2/3 h-2/3 object-cover absolute bottom-0 right-0 shadow-xl border-8 border-white transition-transform duration-1000 ease-out">
+        </div>
+
+        <div class="w-full md:w-1/2 relative h-[500px] md:h-[600px] flex items-center justify-center">
+          
+          <div class="curtain-reveal absolute z-10 w-[260px] h-[380px] md:w-[320px] md:h-[480px] -rotate-3 border-[10px] border-white shadow-2xl top-0 left-4 md:left-0 bg-white">
+             <div class="curtain bg-[#D4AF37]"></div> 
+             <img src="assets/images/bride-story.jpg" class="w-full h-full object-cover" alt="Meghana">
+             
+             <div class="absolute bottom-6 inset-x-0 flex justify-center z-30">
+               <span class="bg-white/95 backdrop-blur-sm px-6 py-2 text-[10px] font-bold tracking-[0.3em] uppercase text-zinc-900 shadow-lg border border-zinc-100">
+                 Meghana
+               </span>
+             </div>
           </div>
+          
+          <div class="curtain-reveal absolute z-20 w-[260px] h-[380px] md:w-[320px] md:h-[480px] rotate-3 border-[10px] border-white shadow-2xl bottom-0 right-4 md:right-0 bg-white">
+             <div class="curtain bg-[#D4AF37]"></div>
+             <img src="assets/images/groom-story.jpg" class="w-full h-full object-cover" alt="Vishal">
+             
+             <div class="absolute bottom-6 inset-x-0 flex justify-center z-30">
+                <span class="bg-white/95 backdrop-blur-sm px-6 py-2 text-[10px] font-bold tracking-[0.3em] uppercase text-zinc-900 shadow-lg border border-zinc-100">
+                  Vishal
+                </span>
+             </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" class="py-24 bg-white">
+    <div class="container mx-auto px-4 md:px-6">
+      <div class="text-center mb-16 md:mb-24">
+        <h2 class="text-4xl md:text-6xl font-serif text-zinc-900 mb-4" data-i18n="gallery_title">Captured Moments</h2>
+        <div class="w-16 h-0.5 bg-[#D4AF37] mx-auto mb-4"></div>
+        <p class="text-xs uppercase tracking-widest text-zinc-400" data-i18n="gallery_sub">Glimpses of our journey</p>
+      </div>
+      
+      <div class="columns-2 md:columns-3 gap-4 space-y-4">
+        <div class="break-inside-avoid overflow-hidden rounded-lg group"><img src="assets/images/gallery-1.jpg" class="w-full group-hover:scale-110 transition-transform duration-700 ease-in-out cursor-pointer"></div>
+        <div class="break-inside-avoid overflow-hidden rounded-lg group"><img src="assets/images/gallery-2.jpg" class="w-full group-hover:scale-110 transition-transform duration-700 ease-in-out cursor-pointer"></div>
+        <div class="break-inside-avoid overflow-hidden rounded-lg group"><img src="assets/images/gallery-3.jpg" class="w-full group-hover:scale-110 transition-transform duration-700 ease-in-out cursor-pointer"></div>
+        <div class="break-inside-avoid overflow-hidden rounded-lg group"><img src="assets/images/gallery-4.jpg" class="w-full group-hover:scale-110 transition-transform duration-700 ease-in-out cursor-pointer"></div>
+        <div class="break-inside-avoid overflow-hidden rounded-lg group"><img src="assets/images/gallery-5.jpg" class="w-full group-hover:scale-110 transition-transform duration-700 ease-in-out cursor-pointer"></div>
+        <div class="break-inside-avoid overflow-hidden rounded-lg group"><img src="assets/images/gallery-6.jpg" class="w-full group-hover:scale-110 transition-transform duration-700 ease-in-out cursor-pointer"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="albums" class="py-24 bg-[#Fdf8f5]">
+    <div class="container mx-auto px-6">
+      <h2 class="text-4xl md:text-6xl font-serif text-center mb-16 text-zinc-900" data-i18n="albums_title">Celebrations</h2>
+      
+      <div class="flex md:grid md:grid-cols-4 gap-8 overflow-x-auto pb-10 md:pb-0 snap-x snap-mandatory px-4 scrollbar-hide">
+        
+        <div class="snap-center shrink-0 w-[280px] md:w-auto group cursor-pointer" onclick="window.open('DRIVE_LINK_1')">
+          <div class="relative h-[320px] w-full flex items-center justify-center">
+             <div class="absolute w-[220px] h-[280px] bg-white border-4 border-white shadow-md transform rotate-[-6deg] transition-transform group-hover:rotate-[-12deg] group-hover:translate-x-[-10px]"></div>
+             <div class="absolute w-[220px] h-[280px] bg-white border-4 border-white shadow-md transform rotate-[6deg] transition-transform group-hover:rotate-[12deg] group-hover:translate-x-[10px]"></div>
+             <div class="relative w-[220px] h-[280px] bg-white border-4 border-white shadow-lg overflow-hidden group-hover:scale-105 transition-transform">
+               <img src="assets/images/haldi-thumb.jpg" class="w-full h-full object-cover">
+             </div>
+          </div>
+          <h3 class="text-center mt-6 font-serif text-xl group-hover:text-[#D4AF37] transition-colors" data-i18n="album_haldi">Haldi</h3>
+        </div>
+
+        <div class="snap-center shrink-0 w-[280px] md:w-auto group cursor-pointer" onclick="window.open('DRIVE_LINK_2')">
+          <div class="relative h-[320px] w-full flex items-center justify-center">
+             <div class="absolute w-[220px] h-[280px] bg-white border-4 border-white shadow-md transform rotate-[-6deg] transition-transform group-hover:rotate-[-12deg] group-hover:translate-x-[-10px]"></div>
+             <div class="absolute w-[220px] h-[280px] bg-white border-4 border-white shadow-md transform rotate-[6deg] transition-transform group-hover:rotate-[12deg] group-hover:translate-x-[10px]"></div>
+             <div class="relative w-[220px] h-[280px] bg-white border-4 border-white shadow-lg overflow-hidden group-hover:scale-105 transition-transform">
+               <img src="assets/images/sangeet-thumb.jpg" class="w-full h-full object-cover">
+             </div>
+          </div>
+          <h3 class="text-center mt-6 font-serif text-xl group-hover:text-[#D4AF37] transition-colors" data-i18n="album_sangeet">Sangeet</h3>
+        </div>
+
+        <div class="snap-center shrink-0 w-[280px] md:w-auto group cursor-pointer" onclick="window.open('DRIVE_LINK_3')">
+          <div class="relative h-[320px] w-full flex items-center justify-center">
+             <div class="absolute w-[220px] h-[280px] bg-white border-4 border-white shadow-md transform rotate-[-6deg] transition-transform group-hover:rotate-[-12deg] group-hover:translate-x-[-10px]"></div>
+             <div class="absolute w-[220px] h-[280px] bg-white border-4 border-white shadow-md transform rotate-[6deg] transition-transform group-hover:rotate-[12deg] group-hover:translate-x-[10px]"></div>
+             <div class="relative w-[220px] h-[280px] bg-white border-4 border-white shadow-lg overflow-hidden group-hover:scale-105 transition-transform">
+               <img src="assets/images/marriage-thumb.jpg" class="w-full h-full object-cover">
+             </div>
+          </div>
+          <h3 class="text-center mt-6 font-serif text-xl group-hover:text-[#D4AF37] transition-colors">Marriage</h3>
+        </div>
+
+        <div class="snap-center shrink-0 w-[280px] md:w-auto group cursor-pointer" onclick="window.open('DRIVE_LINK_4')">
+          <div class="relative h-[320px] w-full flex items-center justify-center">
+             <div class="absolute w-[220px] h-[280px] bg-white border-4 border-white shadow-md transform rotate-[-6deg] transition-transform group-hover:rotate-[-12deg] group-hover:translate-x-[-10px]"></div>
+             <div class="absolute w-[220px] h-[280px] bg-white border-4 border-white shadow-md transform rotate-[6deg] transition-transform group-hover:rotate-[12deg] group-hover:translate-x-[10px]"></div>
+             <div class="relative w-[220px] h-[280px] bg-white border-4 border-white shadow-lg overflow-hidden group-hover:scale-105 transition-transform">
+               <img src="assets/images/reception-thumb.jpg" class="w-full h-full object-cover">
+             </div>
+          </div>
+          <h3 class="text-center mt-6 font-serif text-xl group-hover:text-[#D4AF37] transition-colors">Reception</h3>
         </div>
       </div>
-    </section>
-
-    <div class="section-divider">
-      <svg viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M99.5,2.5 C99.5,3.88071187 98.3807119,5 97,5 C95.6192881,5 94.5,3.88071187 94.5,2.5 C94.5,1.11928813 95.6192881,0 97,0 C98.3807119,0 99.5,1.11928813 99.5,2.5 Z M50,5 L92,5 M3,5 C1.61928813,5 0.5,3.88071187 0.5,2.5 C0.5,1.11928813 1.61928813,0 3,0 C4.38071187,0 5.5,1.11928813 5.5,2.5 C5.5,3.88071187 4.38071187,5 3,5 Z M8,5 L50,5" stroke="currentColor" stroke-width="1" stroke-linecap="round"></path></svg>
     </div>
+  </section>
 
-    <!-- DETAILS -->
-    <section id="details" class="py-20 md:py-24">
-    <div class="container mx-auto px-6 text-center">
-        <h2 class="text-4xl md:text-5xl font-serif mb-12 reveal" data-i18n="wedding_details">Wedding Details</h2>
-
-        <!-- 2 columns since we only show Muhurtham + Reception -->
-        <div class="grid md:grid-cols-2 gap-10 max-w-5xl mx-auto">
-
-        <!-- Muhurtham -->
-        <div class="reveal" style="transition-delay: 200ms;">
-            <h3 class="text-2xl font-serif mb-3 text-[var(--accent-gold)]" data-i18n="muhurtham">Muhurtham</h3>
-            <p class="font-semibold">March 8, 2026 at 11:00 AM</p>
-            <p class="mt-2 text-sm text-gray-600">
-            Sri Venkateswara Temple<br>456 Divine Rd, Plano, TX 75023
-            </p>
-
-            <!-- Watch Live (opens in new tab) -->
-            <a id="wedding-live"
-            href="#"
-            target="_blank" rel="noopener noreferrer"
-            class="mt-4 inline-flex items-center gap-2 px-5 py-2 rounded-full
-                    bg-[var(--accent-gold)] text-white border border-[var(--accent-gold)]
-                    hover:bg-transparent hover:text-[var(--accent-gold)]
-                    transition disabled:opacity-50 disabled:pointer-events-none">
-            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true">
-                <path d="M8 5v14l11-7-11-7z"></path>
-            </svg>
-            <span>Watch Live</span>
-            <span class="sr-only">(opens in new tab)</span>
-            </a>
-
-            <!-- Map directions -->
-            <div class="mt-2">
-            <a id="wedding-map"
-                href="https://maps.app.goo.gl/example-muhurtham-map"
-                target="_blank" rel="noopener"
-                class="inline-flex items-center gap-1 text-[var(--accent-gold)] underline">
-                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true">
-                <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path>
-                </svg>
-                <span>Map directions</span>
-            </a>
-            </div>
-        </div>
-
-        <!-- Reception -->
-        <div class="reveal" style="transition-delay: 400ms;">
-            <h3 class="text-2xl font-serif mb-3 text-[var(--accent-gold)]" data-i18n="reception">Reception</h3>
-            <p class="font-semibold">March 8, 2026 at 7:00 PM</p>
-            <p class="mt-2 text-sm text-gray-600">
-            The Crystal Hall<br>789 Eternity Blvd, Frisco, TX 75034
-            </p>
-
-            <!-- Watch Live (opens in new tab) -->
-            <a id="reception-live"
-            href="#"
-            target="_blank" rel="noopener noreferrer"
-            class="mt-4 inline-flex items-center gap-2 px-5 py-2 rounded-full
-                    bg-[var(--accent-gold)] text-white border border-[var(--accent-gold)]
-                    hover:bg-transparent hover:text-[var(--accent-gold)]
-                    transition disabled:opacity-50 disabled:pointer-events-none">
-            <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true">
-                <path d="M8 5v14l11-7-11-7z"></path>
-            </svg>
-            <span>Watch Live</span>
-            <span class="sr-only">(opens in new tab)</span>
-            </a>
-
-            <!-- Map directions -->
-            <div class="mt-2">
-            <a id="reception-map"
-                href="https://maps.app.goo.gl/example-reception-map"
-                target="_blank" rel="noopener"
-                class="inline-flex items-center gap-1 text-[var(--accent-gold)] underline">
-                <svg viewBox="0 0 24 24" class="w-4 h-4" fill="currentColor" aria-hidden="true">
-                <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"></path>
-                </svg>
-                <span>Map directions</span>
-            </a>
-            </div>
-        </div>
-
-        </div>
-    </div>
-    </section>
-
-    <div class="section-divider">
-      <svg viewBox="0 0 100 10" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M99.5,2.5 C99.5,3.88071187 98.3807119,5 97,5 C95.6192881,5 94.5,3.88071187 94.5,2.5 C94.5,1.11928813 95.6192881,0 97,0 C98.3807119,0 99.5,1.11928813 99.5,2.5 Z M50,5 L92,5 M3,5 C1.61928813,5 0.5,3.88071187 0.5,2.5 C0.5,1.11928813 1.61928813,0 3,0 C4.38071187,0 5.5,1.11928813 5.5,2.5 C5.5,3.88071187 4.38071187,5 3,5 Z M8,5 L50,5" stroke="currentColor" stroke-width="1" stroke-linecap="round"></path></svg>
-    </div>
-
-    <!-- GALLERY -->
-    <section id="gallery" class="py-20 md:py-24 bg-white/50">
-      <div class="container mx-auto px-6 text-center">
-        <h2 class="text-4xl md:text-5xl font-serif mb-12 reveal" data-i18n="our_moments">Our Moments</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
-          <div class="gallery-item reveal"><div class="gallery-overlay"></div><img src="https://i.imgur.com/7mJ1t8p.jpeg" alt="Meghana and Vishal" loading="lazy"></div>
-          <div class="gallery-item reveal" style="transition-delay: 100ms;"><div class="gallery-overlay"></div><img src="https://i.imgur.com/dZQLSgR.jpeg" alt="Meghana and Vishal" loading="lazy"></div>
-          <div class="gallery-item reveal" style="transition-delay: 200ms;"><div class="gallery-overlay"></div><img src="https://i.imgur.com/M6svB16.jpeg" alt="Meghana" loading="lazy"></div>
-          <div class="gallery-item reveal" style="transition-delay: 300ms;"><div class="gallery-overlay"></div><img src="https://i.imgur.com/APncrru.jpeg" alt="Meghana and Vishal" loading="lazy"></div>
-          <div class="gallery-item reveal md:col-start-2" style="transition-delay: 400ms;"><div class="gallery-overlay"></div><img src="https://i.imgur.com/m2w1L2A.jpeg" alt="Meghana and Vishal" loading="lazy"></div>
-          <div class="gallery-item reveal" style="transition-delay: 500ms;"><div class="gallery-overlay"></div><img src="https://i.imgur.com/uLg2Y2U.jpeg" alt="Meghana and Vishal" loading="lazy"></div>
-          <div class="gallery-item reveal" style="transition-delay: 600ms;"><div class="gallery-overlay"></div><img src="https://i.imgur.com/vgfhVcm.jpeg" alt="Vishal" loading="lazy"></div>
-        </div>
+  <section id="rsvp" class="py-24 md:py-32 bg-white">
+    <div class="container mx-auto px-4 md:px-6 max-w-3xl">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-6xl font-serif text-zinc-900 mb-4" data-i18n="rsvp_title">RSVP</h2>
+        <p class="text-xs uppercase tracking-widest text-zinc-500" data-i18n="rsvp_deadline">Please respond by Feb 15, 2026</p>
       </div>
-    </section>
 
-    <!-- RSVP -->
-    <section id="rsvp" class="py-20 md:py-32">
-      <div class="container mx-auto px-6 text-center">
-        <h2 class="text-4xl md:text-5xl font-serif mb-6 reveal" data-i18n="title">Will You Be Joining Us?</h2>
-        <p class="max-w-xl mx-auto mb-10 text-gray-600 reveal" data-i18n="subtitle">Kindly RSVP by February 8, 2026, so we can make arrangements.</p>
+      <form id="rsvp-form" class="bg-[#Fdf8f5] p-8 md:p-12 rounded-3xl border border-zinc-100 shadow-xl relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-1.5 bg-[#D4AF37]"></div>
 
-        <form id="rsvp-form" class="max-w-xl mx-auto grid gap-4 text-left reveal">
-          <div>
-            <label class="block text-sm mb-1" data-i18n="full_name_label">Full Name *</label>
-            <input name="full_name" required class="w-full border px-3 py-2 rounded" />
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div class="space-y-2">
+             <label class="text-[10px] uppercase font-bold tracking-widest text-zinc-400" data-i18n="rsvp_name">Full Name</label>
+             <input type="text" name="full_name" required class="w-full bg-transparent border-b border-zinc-300 py-3 outline-none focus:border-[#D4AF37] transition-colors text-lg font-serif">
           </div>
-
-          <div class="grid md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm mb-1" data-i18n="email_label">Email *</label>
-              <input type="email" name="email" required class="w-full border px-3 py-2 rounded" />
-            </div>
-            <div>
-              <label class="block text-sm mb-1" data-i18n="phone_label">Phone</label>
-              <input name="phone" class="w-full border px-3 py-2 rounded" />
-            </div>
+          <div class="space-y-2">
+             <label class="text-[10px] uppercase font-bold tracking-widest text-zinc-400" data-i18n="rsvp_phone">Mobile Number</label>
+             <input type="tel" name="phone" required class="w-full bg-transparent border-b border-zinc-300 py-3 outline-none focus:border-[#D4AF37] transition-colors text-lg font-serif">
           </div>
+        </div>
 
-          <div class="grid md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm mb-1" data-i18n="side_label">Side *</label>
-              <select name="side" required class="w-full border px-3 py-2 rounded">
-                <option value="Bride" data-i18n="side_bride">Bride</option>
-                <option value="Groom" data-i18n="side_groom">Groom</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm mb-1" data-i18n="headcount_label">Headcount (incl. you) *</label>
-              <input type="number" name="headcount" min="0" max="20" required class="w-full border px-3 py-2 rounded" />
-            </div>
+        <div class="mb-10 text-center">
+          <label class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-4" data-i18n="rsvp_side_label">You are from</label>
+          <div class="flex justify-center gap-6">
+             <label class="cursor-pointer group">
+               <input type="radio" name="side" value="Bride" required class="peer sr-only">
+               <div class="px-8 py-3 border border-zinc-300 rounded-full peer-checked:bg-[#D4AF37] peer-checked:text-white peer-checked:border-[#D4AF37] transition-all text-xs font-bold uppercase tracking-wide group-hover:border-[#D4AF37]" data-i18n="rsvp_bride_side">Bride's Side</div>
+             </label>
+             <label class="cursor-pointer group">
+               <input type="radio" name="side" value="Groom" required class="peer sr-only">
+               <div class="px-8 py-3 border border-zinc-300 rounded-full peer-checked:bg-[#D4AF37] peer-checked:text-white peer-checked:border-[#D4AF37] transition-all text-xs font-bold uppercase tracking-wide group-hover:border-[#D4AF37]" data-i18n="rsvp_groom_side">Groom's Side</div>
+             </label>
           </div>
+        </div>
 
-          <fieldset class="border rounded p-3">
-            <legend class="text-sm px-1" data-i18n="events_legend">Events attending</legend>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <label class="flex items-center gap-2">
-                <input type="checkbox" name="attending_marriage" />
-                <span data-i18n="attend_marriage">Marriage (Mar 8, 2026)</span>
-              </label>
-              <label class="flex items-center gap-2">
-                <input type="checkbox" name="attending_reception" />
-                <span data-i18n="attend_reception">Reception (Mar 8, 2026, evening)</span>
-              </label>
-            </div>
-            <p class="text-xs text-gray-500 mt-2" data-i18n="note_private">(Sangeet, Mehendi are private invites.)</p>
-          </fieldset>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+           <div class="bg-white p-6 rounded-2xl border border-zinc-100">
+             <label class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-3" data-i18n="rsvp_events_label">Events Attending</label>
+             <div class="space-y-3">
+               <label class="flex items-center gap-3 cursor-pointer">
+                 <input type="checkbox" name="event_marriage" class="accent-[#D4AF37] w-5 h-5">
+                 <span class="text-sm font-medium text-zinc-700" data-i18n="rsvp_event_m">Marriage (Muhurtham)</span>
+               </label>
+               <label class="flex items-center gap-3 cursor-pointer">
+                 <input type="checkbox" name="event_reception" class="accent-[#D4AF37] w-5 h-5">
+                 <span class="text-sm font-medium text-zinc-700" data-i18n="rsvp_event_r">Reception (Evening)</span>
+               </label>
+             </div>
+           </div>
 
-          <div class="grid md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm mb-1" data-i18n="dietary_label">Dietary Preference</label>
-              <select name="dietary" class="w-full border px-3 py-2 rounded">
-                <option value="Veg" data-i18n="dietary_veg">Veg</option>
-                <option value="Non-Veg" data-i18n="dietary_nonveg">Non-Veg</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-sm mb-1" data-i18n="notes_label">Notes</label>
-              <input name="notes" class="w-full border px-3 py-2 rounded" placeholder="Allergies, accessibility, etc." />
-            </div>
-          </div>
+           <div class="bg-white p-6 rounded-2xl border border-zinc-100 flex flex-col items-center justify-center">
+             <label class="text-[10px] uppercase font-bold tracking-widest text-zinc-400 block mb-3" data-i18n="rsvp_guests">Total Guests</label>
+             <div class="flex items-center gap-6">
+               <button type="button" id="minus" class="w-10 h-10 rounded-full border border-zinc-200 flex items-center justify-center hover:bg-[#D4AF37] hover:text-white transition-all text-xl">-</button>
+               <span id="guest-count" class="font-serif text-3xl w-8 text-center text-[#D4AF37]">1</span>
+               <button type="button" id="plus" class="w-10 h-10 rounded-full border border-zinc-200 flex items-center justify-center hover:bg-[#D4AF37] hover:text-white transition-all text-xl">+</button>
+               <input type="hidden" name="guests" id="guests-input" value="1">
+             </div>
+           </div>
+        </div>
 
-          <input type="hidden" name="language" id="rsvp-language" value="en" />
-
-          <button class="btn-gold px-8 py-3 mt-2 rounded" type="submit" data-i18n="submit_btn">Submit RSVP</button>
-
-          <p id="rsvp-status" class="text-sm mt-3"></p>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <footer class="bg-white py-10">
-    <div class="container mx-auto px-6 text-center text-gray-500">
-      <div class="w-28 h-28 text-[var(--accent-gold)] mb-2 mx-auto">
-        <!-- Footer monogram (same as header) -->
-        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="currentColor" role="img" aria-labelledby="footerTitle footerDesc">
-          <title id="footerTitle">MV Monogram</title>
-          <desc id="footerDesc">Monogram logo with initials M and V and botanical wreath</desc>
-          <g text-anchor="middle" fill-rule="evenodd">
-            <text x="78" y="105" font-family="'Playfair Display', serif" font-size="60" text-anchor="end">M</text>
-            <path d="M100 50 V 120" stroke-width="1" fill="none"/>
-            <text x="122" y="105" font-family="'Playfair Display', serif" font-size="60" text-anchor="start">V</text>
-            <text x="100" y="145" font-family="'Poppins', sans-serif" font-size="12" letter-spacing="2" fill-opacity="0.8">MEGHANA & VISHAL</text>
-            <path d="M 50 155 C 70 170, 130 170, 150 155" fill="none" stroke-width="1" />
-            <path d="M 60 159 a 10 10 0 0 1 10 -5" fill="none" stroke-width="1"/>
-            <path d="M 80 165 a 10 10 0 0 1 10 -5" fill="none" stroke-width="1"/>
-            <path d="M 140 159 a 10 10 0 0 0 -10 -5" fill="none" stroke-width="1"/>
-            <path d="M 120 165 a 10 10 0 0 0 -10 -5" fill="none" stroke-width="1"/>
-          </g>
-        </svg>
-      </div>
-      <p class="text-sm" data-i18n="rights">© 2026 Meghana & Vishal. All rights reserved.</p>
+        <button type="submit" class="w-full bg-[#1a1a1a] text-white py-5 rounded-full uppercase tracking-[0.2em] text-xs font-bold hover:bg-[#D4AF37] transition-all duration-500 shadow-xl hover:shadow-2xl transform hover:-translate-y-1" data-i18n="rsvp_btn">
+          Confirm Attendance
+        </button>
+        <p id="rsvp-status" class="text-center text-sm font-medium italic mt-6 text-[#D4AF37] min-h-[20px]"></p>
+      </form>
     </div>
+  </section>
+
+  <footer class="py-16 bg-[#1a1a1a] text-center">
+    <div class="text-[#D4AF37] text-2xl font-serif mb-4">Meghana & Vishal</div>
+    <p class="text-[10px] uppercase tracking-[0.4em] text-white/40">© 2026 The Wedding</p>
   </footer>
+
 </body>
 </html>

@@ -1,195 +1,248 @@
+/* =========================================
+   1. CORE SETTINGS & VARIABLES
+   ========================================= */
 :root {
-  --bg-beige: #F5F1ED;
-  --text-charcoal: #333333;
-  --accent-gold: #B89F78;
-  --dark-charcoal: #212121;
-  --intro-text-color: #ffffff;
+  --gold: #D4AF37;
+  --dark: #1a1a1a;
+  --light: #Fdf8f5;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
+  /* Font fallback is handled in HTML, this ensures consistency */
   font-family: 'Poppins', sans-serif;
-  background-color: var(--bg-beige);
-  color: var(--text-charcoal);
   overflow-x: hidden;
-  position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Show custom cursor only on desktop for accessibility */
-@media (min-width: 768px) {
-  body { cursor: none; }
+h1, h2, h3, .font-serif {
+  font-family: 'Cinzel', serif;
 }
 
-body::before {
-  content: '';
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--light);
+}
+::-webkit-scrollbar-thumb {
+  background: #d4c5ad;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+/* =========================================
+   2. CINEMATIC EFFECTS
+   ========================================= */
+
+/* Film Grain Overlay */
+/* Note: The SVG data is inline in HTML for performance, 
+   but this class handles positioning */
+.noise-overlay {
   position: fixed;
   top: 0;
   left: 0;
-  width: 200%;
-  height: 200%;
-  z-index: -1;
-  background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M25 50 C25 63.8, 36.2 75, 50 75 C63.8 75, 75 63.8, 75 50 C75 36.2, 63.8 25, 50 25 C36.2 25, 25 36.2, 25 50 Z" stroke="%23E9E2DC" stroke-width="1" fill="none" /><path d="M50 0 V25 M50 75 V100 M0 50 H25 M75 50 H100" stroke="%23E9E2DC" stroke-width="1" fill="none" /></svg>');
-  background-repeat: repeat;
-  opacity: 0.5;
-  animation: bg-pan 60s linear infinite;
-}
-@keyframes bg-pan {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(-50%, -50%); }
-}
-
-h1, h2, h3, h4, .font-serif {
-  font-family: 'Playfair Display', serif;
-}
-.font-script {
-  font-family: 'Tangerine', cursive;
-}
-
-#hero {
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  text-align: center;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-}
-#hero::after {
-  content:'';
-  position: absolute;
-  inset: 0;
-  background: rgba(33,33,33,0.5);
-  z-index: 1;
-}
-
-.nav-link {
-  transition: color 0.3s ease;
-  color: var(--text-charcoal);
-  position: relative;
-  padding-bottom: 4px;
-}
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background-color: var(--accent-gold);
-  transition: width 0.3s ease;
-}
-.nav-link:hover::after {
-  width: 100%;
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 1s ease-out, transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.btn-gold {
-  background-color: var(--accent-gold);
-  color: white;
-  transition: all 0.3s ease;
-  border: 1px solid var(--accent-gold);
-}
-.btn-gold:hover {
-  background-color: transparent;
-  color: var(--accent-gold);
-}
-
-.gallery-item {
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
-  aspect-ratio: 4 / 5;
-}
-.gallery-item img {
-  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
   width: 100%;
   height: 100%;
-  object-fit: cover;
-}
-.gallery-item:hover img {
-  transform: scale(1.05);
-}
-.gallery-overlay {
-  position: absolute;
-  inset: 0;
-  background-color: rgba(184, 159, 120, 0.3);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-.gallery-item:hover .gallery-overlay {
-  opacity: 1;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
 }
 
-.border-gold { border-color: var(--accent-gold); }
-
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.fade-in-up { animation: fadeInUp 1s ease-out forwards; opacity: 0; }
-.delay-200 { animation-delay: 200ms; }
-.delay-400 { animation-delay: 400ms; }
-
-.tick { animation: tick 0.5s ease-out; }
-@keyframes tick {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
+/* Custom Gold Cursor */
 #cursor-dot {
-  width: 8px;
-  height: 8px;
-  background-color: var(--accent-gold);
+  width: 12px;
+  height: 12px;
+  background: var(--gold);
   border-radius: 50%;
   position: fixed;
-  top: 0;
-  left: 0;
-  transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 9999;
-  transition: transform 0.2s ease-out, opacity 0.2s ease-out;
-  display: none; /* show only on desktop via media query below */
-}
-/* show custom cursor only on large screens */
-@media (min-width: 768px) {
-  #cursor-dot { display: block; }
-}
-#cursor-dot.hovered {
-  transform: translate(-50%, -50%) scale(2.5);
-  opacity: 0.5;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease-out;
+  mix-blend-mode: difference;
 }
 
-.section-divider {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem 0;
-}
-.section-divider svg {
-  width: 100px;
-  height: auto;
-  color: var(--accent-gold);
-  opacity: 0.5;
+/* Hover state for cursor (optional, requires JS trigger) */
+body.hovering #cursor-dot {
+  transform: translate(-50%, -50%) scale(4);
+  opacity: 0.2;
 }
 
-.map-link {
-  display: inline-block;
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: var(--accent-gold);
-  text-decoration: underline;
-  transition: opacity 0.3s ease;
+/* =========================================
+   3. HERO ANIMATIONS
+   ========================================= */
+
+/* "Ken Burns" Slow Zoom Effect */
+.animate-zoom {
+  animation: zoom-in 25s infinite alternate ease-in-out;
 }
-.map-link:hover { opacity: 0.8; }
+
+@keyframes zoom-in {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15); }
+}
+
+/* Initial States for GSAP Reveals */
+.reveal-text, 
+.animate-fade-in-up {
+  /* JS will handle opacity, but we ensure it starts hidden */
+  opacity: 0; 
+  transform: translateY(20px);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pure CSS Fallback for Hero Fade In */
+.animate-fade-in-up {
+  animation: fadeInUp 1s ease-out forwards;
+}
+
+/* =========================================
+   4. CURTAIN REVEAL (THE "SHOCKING" EFFECT)
+   ========================================= */
+
+.curtain-reveal {
+  position: relative;
+  overflow: hidden;
+}
+
+.curtain {
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  z-index: 20;
+  /* Start covering the image */
+  transform: scaleY(1);
+  transform-origin: bottom;
+  transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* Class added by ScrollTrigger in JS */
+.reveal-active .curtain {
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+/* =========================================
+   5. ALBUM STACKS
+   ========================================= */
+
+.album-stack {
+  position: relative;
+  width: 220px;
+  height: 280px;
+  margin: 0 auto;
+  perspective: 1000px;
+}
+
+/* Base style for all photos in stack */
+.photo-back, .photo-mid, .photo-front {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  border: 6px solid #fff;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  border-radius: 4px;
+}
+
+/* Initial messy stack positions */
+.photo-back { 
+  transform: rotate(-6deg); 
+  z-index: 1; 
+  background-color: #f0f0f0;
+}
+.photo-mid { 
+  transform: rotate(6deg); 
+  z-index: 2; 
+  background-color: #f8f8f8;
+}
+.photo-front { 
+  transform: rotate(0deg); 
+  z-index: 3; 
+  overflow: hidden;
+}
+
+/* Hover Effects: Fan them out */
+.group:hover .photo-back {
+  transform: translate(-15px, -5px) rotate(-12deg);
+}
+.group:hover .photo-mid {
+  transform: translate(15px, -5px) rotate(12deg);
+}
+.group:hover .photo-front {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+/* Hide Scrollbar for Mobile Album Container */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* =========================================
+   6. MUSIC EQUALIZER
+   ========================================= */
+
+.bar {
+  width: 3px;
+  background-color: var(--gold);
+  border-radius: 2px;
+  /* Default animation */
+  animation: eq-bounce 1s infinite ease-in-out;
+}
+
+/* Stagger animations for wave look */
+.bar:nth-child(1) { animation-delay: 0.0s; }
+.bar:nth-child(2) { animation-delay: 0.2s; }
+.bar:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes eq-bounce {
+  0%, 100% { height: 4px; }
+  50% { height: 16px; }
+}
+
+/* Pause state (optional if you add JS logic to pause animation) */
+.paused .bar {
+  animation-play-state: paused;
+  height: 4px !important;
+}
+
+/* =========================================
+   7. FORM & UTILS
+   ========================================= */
+
+/* Remove default focus outline, use border color instead */
+input:focus {
+  outline: none;
+}
+
+/* Radio button styling tweaks */
+input[type="radio"]:checked + div {
+  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4);
+}
+
+/* Checkbox Accent Color Override for Webkit */
+input[type="checkbox"] {
+  accent-color: var(--gold);
+  cursor: pointer;
+}
