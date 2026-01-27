@@ -31,14 +31,15 @@ document.addEventListener("DOMContentLoaded", () => {
       // Navigation
       nav_story: "Our Story",
       nav_gallery: "Gallery",
+      nav_venues: "Venues",
       nav_albums: "Albums",
       nav_rsvp: "RSVP",
       
       // Hero
       hero_tagline: "We Are Getting Married",
-      label_days: "Days", label_hours: "Hrs", label_minutes: "Mins",
+      label_days: "Days", label_hours: "Hrs", label_minutes: "Mins", label_seconds: "Secs",
       
-      // Story (Trendy Version)
+      // Story
       story_label: "How It Happened",
       story_title: "It Wasn't Love at First Sight...",
       story_p1: "It started with a casual coffee that turned into a 4-hour conversation. We didn't realize it then, but amidst the debates about movies and shared laughter over bad jokes, we were finding our home in each other.",
@@ -48,13 +49,24 @@ document.addEventListener("DOMContentLoaded", () => {
       // Gallery
       gallery_title: "Captured Moments",
       gallery_sub: "Glimpses of our journey",
+
+      // Venues (New)
+      venues_title: "When & Where",
+      venue_wedding: "The Wedding",
+      venue_wedding_time: "March 8, 2026 | 11:11 AM",
+      venue_reception: "The Reception",
+      venue_reception_time: "March 8, 2026 | 7:00 PM",
+      btn_live: "Watch Live",
+      btn_map: "View Map",
       
       // Albums
       albums_title: "Celebrations",
       album_haldi: "Haldi",
       album_sangeet: "Sangeet",
+      album_wedding: "Wedding",
+      album_reception: "Reception",
       
-      // RSVP Section
+      // RSVP
       rsvp_title: "RSVP",
       rsvp_deadline: "Please respond by Feb 15, 2026",
       rsvp_name: "Full Name",
@@ -63,23 +75,27 @@ document.addEventListener("DOMContentLoaded", () => {
       rsvp_bride_side: "Bride's Side",
       rsvp_groom_side: "Groom's Side",
       rsvp_events_label: "Events Attending",
-      rsvp_event_m: "Marriage (Muhurtham)",
+      rsvp_event_m: "Wedding (Muhurtham)",
       rsvp_event_r: "Reception (Evening)",
       rsvp_guests: "Total Guests",
-      rsvp_btn: "Confirm Attendance"
+      rsvp_btn: "Confirm Attendance",
+      
+      // Footer/Misc
+      visit_label: "Views:"
     },
     te: {
       // Navigation
       nav_story: "మా కథ",
       nav_gallery: "జ్ఞాపకాలు",
+      nav_venues: "వేదికలు",
       nav_albums: "వేడుకలు",
       nav_rsvp: "ఆహ్వానం",
       
       // Hero
       hero_tagline: "మేము ఒక్కటవుతున్నాము",
-      label_days: "రోజులు", label_hours: "గంటలు", label_minutes: "నిమిషాలు",
+      label_days: "రోజులు", label_hours: "గంటలు", label_minutes: "నిమిషాలు", label_seconds: "సెకన్లు",
       
-      // Story (Trendy Version translated)
+      // Story
       story_label: "మా ప్రయాణం",
       story_title: "ఇది తొలిచూపు ప్రేమ కాదు...",
       story_p1: "మా పరిచయం ఒక సాధారణ కాఫీతో మొదలైంది. సినిమాల గురించి చర్చలు, చిన్న చిన్న జోకులు... మాకు తెలియకుండానే మేము ఒకరికొకరం దగ్గరయ్యాం.",
@@ -89,13 +105,24 @@ document.addEventListener("DOMContentLoaded", () => {
       // Gallery
       gallery_title: "మధుర క్షణాలు",
       gallery_sub: "మా ప్రయాణంలోని కొన్ని దృశ్యాలు",
+
+      // Venues
+      venues_title: "వేదికలు",
+      venue_wedding: "వివాహం",
+      venue_wedding_time: "మార్చి 8, 2026 | ఉదయం 11:11",
+      venue_reception: "రిసెప్షన్",
+      venue_reception_time: "మార్చి 8, 2026 | సాయంత్రం 7:00",
+      btn_live: "లైవ్ చూడండి",
+      btn_map: "మ్యాప్ చూడండి",
       
       // Albums
       albums_title: "వేడుకలు",
       album_haldi: "హల్దీ",
       album_sangeet: "సంగీత్",
+      album_wedding: "వివాహం",
+      album_reception: "రిసెప్షన్",
       
-      // RSVP Section
+      // RSVP
       rsvp_title: "ఆహ్వానం",
       rsvp_deadline: "దయచేసి ఫిబ్రవరి 15, 2026 లోపు తెలియజేయండి",
       rsvp_name: "పూర్తి పేరు",
@@ -107,16 +134,18 @@ document.addEventListener("DOMContentLoaded", () => {
       rsvp_event_m: "వివాహం (ముహూర్తం)",
       rsvp_event_r: "రిసెప్షన్",
       rsvp_guests: "మొత్తం అతిథులు",
-      rsvp_btn: "నిర్ధారించండి"
+      rsvp_btn: "నిర్ధారించండి",
+
+      // Footer
+      visit_label: "వీక్షణలు:"
     }
   };
 
-  // Logic to switch languages
   if (langBtn) {
     langBtn.addEventListener("click", () => {
       currentLang = currentLang === "en" ? "te" : "en";
       
-      // Animate transition of text
+      // Animate transition
       document.querySelectorAll("[data-i18n]").forEach(el => {
         gsap.to(el, { opacity: 0, duration: 0.2, onComplete: () => {
           const key = el.getAttribute("data-i18n");
@@ -148,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
     delay: 0.2
   });
 
-  // B. Story Text "Rising" Reveal on Scroll
+  // B. Scroll Reveal for Text
   gsap.utils.toArray('.reveal-text').forEach(text => {
     gsap.to(text, {
       scrollTrigger: {
@@ -163,12 +192,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // C. The Gold Curtain Reveal Effect (Important!)
+  // C. Gold Curtain Reveal (The Fix)
+  // This triggers the CSS class .active on the CONTAINER
   gsap.utils.toArray('.curtain-reveal').forEach(revealItem => {
     ScrollTrigger.create({
       trigger: revealItem,
-      start: "top 75%", // Triggers when element is 75% down the viewport
-      onEnter: () => revealItem.classList.add('active') // Adds class to trigger CSS transition
+      start: "top 75%",
+      onEnter: () => revealItem.classList.add('active') 
     });
   });
 
@@ -181,26 +211,28 @@ document.addEventListener("DOMContentLoaded", () => {
   let isPlaying = false;
 
   if (musicBtn && audio) {
-    // 1. Manual Toggle
+    // Toggle
     musicBtn.addEventListener("click", () => {
       if (isPlaying) {
         audio.pause();
-        musicBtn.classList.add("opacity-50"); // Dim button
+        musicBtn.classList.add("opacity-50");
+        musicBtn.classList.remove("playing");
       } else {
-        audio.play().catch(e => console.log("Audio requires interaction"));
-        musicBtn.classList.remove("opacity-50"); // Brighten button
+        audio.play().catch(e => console.log("Audio interaction required"));
+        musicBtn.classList.remove("opacity-50");
+        musicBtn.classList.add("playing");
       }
       isPlaying = !isPlaying;
     });
 
-    // 2. Auto-play attempt on first user interaction (Scroll or Click)
+    // Auto-play Attempt
     const attemptAutoplay = () => {
       if (!isPlaying) {
         audio.play().then(() => {
           isPlaying = true;
           musicBtn.classList.remove("opacity-50");
+          musicBtn.classList.add("playing");
         }).catch(() => {});
-        // Remove listeners once tried
         document.removeEventListener('click', attemptAutoplay);
         document.removeEventListener('scroll', attemptAutoplay);
       }
@@ -211,28 +243,77 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // =========================================================
-  // 5. SMART RSVP FORM
+  // 5. LIVE COUNTDOWN TIMER (IST Fixed)
+  // =========================================================
+  
+  // Set date to March 8, 2026 11:11 AM IST (+05:30)
+  const weddingDate = new Date("2026-03-08T11:11:00+05:30").getTime();
+
+  function updateTimer() {
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
+
+    if (distance > 0) {
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Helper for leading zeros
+      const fmt = (n) => n < 10 ? "0" + n : n;
+
+      const dEl = document.getElementById("days");
+      const hEl = document.getElementById("hours");
+      const mEl = document.getElementById("minutes");
+      const sEl = document.getElementById("seconds");
+
+      if (dEl) dEl.innerText = fmt(days);
+      if (hEl) hEl.innerText = fmt(hours);
+      if (mEl) mEl.innerText = fmt(minutes);
+      if (sEl) sEl.innerText = fmt(seconds);
+    }
+  }
+
+  // Update immediately and then every second
+  updateTimer();
+  setInterval(updateTimer, 1000);
+
+
+  // =========================================================
+  // 6. VISITOR COUNTER (Simulation)
+  // =========================================================
+  const countEl = document.getElementById('visit-count');
+  if (countEl) {
+    // Check localStorage for existing hits, else start at a realistic number
+    let views = localStorage.getItem('page_views');
+    
+    if (!views) {
+      views = 842; // Starting number
+    } else {
+      views = parseInt(views) + 1; // Increment on reload
+    }
+    
+    localStorage.setItem('page_views', views);
+    countEl.innerText = views.toLocaleString();
+  }
+
+
+  // =========================================================
+  // 7. SMART RSVP FORM
   // =========================================================
   const rsvpForm = document.getElementById('rsvp-form');
   const guestDisplay = document.getElementById('guest-count');
   const guestInput = document.getElementById('guests-input');
   let guests = 1;
 
-  // Counter Logic
+  // Counter
   if (document.getElementById('plus')) {
-    document.getElementById('plus').onclick = () => { 
-      if (guests < 10) { guests++; updateG(); } 
-    };
-    document.getElementById('minus').onclick = () => { 
-      if (guests > 1) { guests--; updateG(); } 
-    };
-    function updateG() { 
-      guestDisplay.innerText = guests; 
-      guestInput.value = guests; 
-    }
+    document.getElementById('plus').onclick = () => { if (guests < 10) { guests++; updateG(); } };
+    document.getElementById('minus').onclick = () => { if (guests > 1) { guests--; updateG(); } };
+    function updateG() { guestDisplay.innerText = guests; guestInput.value = guests; }
   }
 
-  // Form Submission Logic
+  // Submission
   if (rsvpForm) {
     rsvpForm.onsubmit = async (e) => {
       e.preventDefault();
@@ -240,7 +321,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const btn = rsvpForm.querySelector('button[type="submit"]');
       const originalText = btn.innerText;
 
-      // UI Feedback: Loading
       btn.innerText = "Sending Response...";
       btn.disabled = true;
 
@@ -257,19 +337,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         if (supabaseClient) {
-          // Send to Real Database
+          // Real DB
           const { error } = await supabaseClient.from('rsvps').insert([payload]);
           if (error) throw error;
           showSuccess(payload.full_name);
         } else {
-          // Simulation (No DB connected)
-          console.log("RSVP Submitted:", payload);
-          await new Promise(r => setTimeout(r, 1500)); // Fake 1.5s delay
+          // Simulation
+          await new Promise(r => setTimeout(r, 1500));
           showSuccess(payload.full_name);
         }
       } catch (err) {
         console.error(err);
-        status.innerText = "Error sending. Please check your internet connection.";
+        status.innerText = "Connection error. Please try again.";
         status.style.color = "red";
         btn.innerText = originalText;
         btn.disabled = false;
@@ -278,16 +357,12 @@ document.addEventListener("DOMContentLoaded", () => {
       function showSuccess(name) {
         rsvpForm.reset();
         guests = 1; updateG();
-        
-        // Change button to success state
         btn.innerText = "Confirmed ✓";
         btn.style.backgroundColor = "#D4AF37";
         btn.style.borderColor = "#D4AF37";
-        
-        status.innerText = `Thank you, ${name}! Your response has been recorded.`;
+        status.innerText = `Thank you, ${name}! We can't wait to see you.`;
         status.style.color = "#D4AF37";
         
-        // Reset button state after 5 seconds
         setTimeout(() => {
           btn.disabled = false;
           btn.innerText = originalText;
@@ -301,24 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // =========================================================
-  // 6. COUNTDOWN TIMER
-  // =========================================================
-  const weddingDate = new Date("March 8, 2026 11:11:00").getTime();
-
-  setInterval(() => {
-    const now = new Date().getTime();
-    const distance = weddingDate - now;
-
-    if (distance > 0) {
-      document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
-      document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    }
-  }, 1000);
-
-
-  // =========================================================
-  // 7. UTILITIES (Custom Cursor)
+  // 8. UTILITIES (Cursor)
   // =========================================================
   const cursor = document.getElementById('cursor-dot');
   if (cursor) {
@@ -326,9 +384,7 @@ document.addEventListener("DOMContentLoaded", () => {
       gsap.to(cursor, { x: e.clientX, y: e.clientY, duration: 0.1 });
     });
     
-    // Expand cursor on clickable items
-    const clickables = document.querySelectorAll('a, button, input, label, .group');
-    clickables.forEach(el => {
+    document.querySelectorAll('a, button, input, label, .group').forEach(el => {
       el.addEventListener('mouseenter', () => gsap.to(cursor, { scale: 3, opacity: 0.4 }));
       el.addEventListener('mouseleave', () => gsap.to(cursor, { scale: 1, opacity: 1 }));
     });
