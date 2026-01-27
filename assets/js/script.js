@@ -97,13 +97,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // =========================================================
-  // 4. MUSIC PLAYER LOGIC
+  // 4. SMART MUSIC PLAYER (Fixed Glitch)
   // =========================================================
   const musicBtn = document.getElementById("music-control");
   const audio = document.getElementById("bg-music");
   let isPlaying = false;
 
   if (musicBtn && audio) {
+    
+    // Check if song finished in a previous session
+    const hasFinishedBefore = sessionStorage.getItem('music_finished');
+    if (hasFinishedBefore) {
+        audio.pause();
+        audio.currentTime = 0;
+        isPlaying = false;
+        // Don't auto-play
+    } else {
+        // Try auto-play if not finished
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => { isPlaying = true; updateMusicUI(true); })
+            .catch(() => {
+                // Browser blocked auto-play, wait for interaction
+                const startOnInteraction = () => {
+                    if(!sessionStorage.getItem('music_finished')) {
+                        audio.play(); isPlaying = true; updateMusicUI(true);
+                    }
+                    document.removeEventListener('click', startOnInteraction);
+                    document.removeEventListener('scroll', startOnInteraction);
+                };
+                document.addEventListener('click', startOnInteraction);
+                document.addEventListener('scroll', startOnInteraction);
+            });
+        }
+    }
+
     const updateMusicUI = (playing) => {
       if (playing) {
         musicBtn.classList.remove("opacity-50");
@@ -119,20 +147,6 @@ document.addEventListener("DOMContentLoaded", () => {
       else { audio.play(); isPlaying = true; }
       updateMusicUI(isPlaying);
     });
-
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-      playPromise.then(() => { isPlaying = true; updateMusicUI(true); })
-      .catch(() => {
-        const startOnInteraction = () => {
-          audio.play(); isPlaying = true; updateMusicUI(true);
-          document.removeEventListener('click', startOnInteraction);
-          document.removeEventListener('scroll', startOnInteraction);
-        };
-        document.addEventListener('click', startOnInteraction);
-        document.addEventListener('scroll', startOnInteraction);
-      });
-    }
   }
 
 
@@ -222,7 +236,6 @@ document.addEventListener("DOMContentLoaded", () => {
       let finalGuestCount = guestDropdown.value;
       if (finalGuestCount === 'more') {
         finalGuestCount = manualInput.value;
-        // 🛑 FIXED: Now allows 5 or more (previously blocked < 6)
         if (!finalGuestCount || finalGuestCount < 5) {
           alert("Please enter a valid number of guests (5 or more).");
           resetButton();
@@ -244,7 +257,7 @@ document.addEventListener("DOMContentLoaded", () => {
         contact: `${countryCode} ${phoneNumber}`,
         side: sideSelection.value,
         guests: parseInt(finalGuestCount),
-        attending: "Yes" // Auto-set to YES
+        attending: "Yes" 
       };
 
       // 5. Send to Supabase
@@ -259,8 +272,8 @@ document.addEventListener("DOMContentLoaded", () => {
         statusMsg.textContent = "✨ Thank you! We have received your RSVP.";
         statusMsg.className = "text-center text-sm font-medium mt-4 text-green-600 block";
         submitBtn.textContent = "Confirmed ✓";
-        submitBtn.classList.remove('bg-gradient-to-r'); // Remove gold gradient
-        submitBtn.classList.add('bg-green-600'); // Make it green
+        submitBtn.classList.remove('bg-gradient-to-r'); 
+        submitBtn.classList.add('bg-green-600'); 
         
         rsvpForm.reset();
         
@@ -284,7 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
         submitBtn.disabled = false;
         submitBtn.innerText = originalText;
         submitBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-green-600');
-        submitBtn.classList.add('bg-gradient-to-r'); // Add back gold gradient
+        submitBtn.classList.add('bg-gradient-to-r'); 
       }
     });
   }
@@ -308,13 +321,20 @@ document.addEventListener("DOMContentLoaded", () => {
 // 9. EXTERNAL EVENTS (Visibility & Audio)
 // =========================================================
 
-// Smart Audio Manager (Pause when tab hidden)
+// Smart Audio Manager (The Fix for the Glitch)
 document.addEventListener('visibilitychange', function() {
     const audio = document.getElementById('bg-music');
     if (!audio) return;
+    
     if (document.hidden) {
+        // Tab hidden -> Pause
         audio.pause();
     } else {
+        // Tab visible -> Play ONLY if it hasn't finished
+        if (audio.ended || sessionStorage.getItem('music_finished')) {
+            return; // STOP! Do not play again.
+        }
+        
         var playPromise = audio.play();
         if (playPromise !== undefined) {
             playPromise.catch(() => console.log("Auto-resume prevented"));
@@ -322,15 +342,21 @@ document.addEventListener('visibilitychange', function() {
     }
 });
 
-// Reset Music Button when song ends
+// Event Listener: When the song finishes, save it to Memory
 const audioEl = document.getElementById('bg-music');
-const musicBtnEl = document.getElementById('music-control'); // ID matched to top variable
-if(audioEl && musicBtnEl) {
+const musicBtnEl = document.getElementById('music-control');
+if(audioEl) {
     audioEl.addEventListener('ended', function() {
-        const icon = musicBtnEl.querySelector('i');
-        if(icon) {
-            icon.classList.remove('fa-pause');
-            icon.classList.add('fa-music');
+        // 1. Save to session memory
+        sessionStorage.setItem('music_finished', 'true');
+
+        // 2. Update UI Icon
+        if(musicBtnEl) {
+            const icon = musicBtnEl.querySelector('i');
+            if(icon) {
+                icon.classList.remove('fa-pause');
+                icon.classList.add('fa-music');
+            }
         }
     });
 }
