@@ -204,41 +204,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   // =========================================================
-  // 4. MUSIC PLAYER LOGIC
+  // 4. MUSIC PLAYER LOGIC (Auto-Play with Browser Policy Fix)
   // =========================================================
   const musicBtn = document.getElementById("music-control");
   const audio = document.getElementById("bg-music");
   let isPlaying = false;
 
   if (musicBtn && audio) {
-    // Toggle
+    
+    // Function to update UI (Wave Animation)
+    const updateMusicUI = (playing) => {
+      if (playing) {
+        musicBtn.classList.remove("opacity-50");
+        musicBtn.classList.add("playing"); 
+      } else {
+        musicBtn.classList.add("opacity-50");
+        musicBtn.classList.remove("playing");
+      }
+    };
+
+    // 1. Manual Toggle (Clicking the icon)
     musicBtn.addEventListener("click", () => {
       if (isPlaying) {
         audio.pause();
-        musicBtn.classList.add("opacity-50");
-        musicBtn.classList.remove("playing");
+        isPlaying = false;
       } else {
-        audio.play().catch(e => console.log("Audio interaction required"));
-        musicBtn.classList.remove("opacity-50");
-        musicBtn.classList.add("playing");
+        audio.play();
+        isPlaying = true;
       }
-      isPlaying = !isPlaying;
+      updateMusicUI(isPlaying);
     });
 
-    // Auto-play Attempt
-    const attemptAutoplay = () => {
-      if (!isPlaying) {
-        audio.play().then(() => {
+    // 2. Intelligent Auto-Play Strategy
+    // Attempt to play immediately when page loads
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        // Auto-play started successfully!
+        isPlaying = true;
+        updateMusicUI(true);
+      }).catch(error => {
+        // Auto-play was blocked by browser. 
+        // We wait for the FIRST user interaction (scroll or click) to start it.
+        console.log("Autoplay prevented. Waiting for interaction.");
+        
+        const startOnInteraction = () => {
+          audio.play();
           isPlaying = true;
-          musicBtn.classList.remove("opacity-50");
-          musicBtn.classList.add("playing");
-        }).catch(() => {});
-        document.removeEventListener('click', attemptAutoplay);
-        document.removeEventListener('scroll', attemptAutoplay);
-      }
-    };
-    document.addEventListener('click', attemptAutoplay);
-    document.addEventListener('scroll', attemptAutoplay);
+          updateMusicUI(true);
+          
+          // Remove listeners so it doesn't try to play again
+          document.removeEventListener('click', startOnInteraction);
+          document.removeEventListener('scroll', startOnInteraction);
+          document.removeEventListener('touchstart', startOnInteraction);
+        };
+
+        document.addEventListener('click', startOnInteraction);
+        document.addEventListener('scroll', startOnInteraction);
+        document.addEventListener('touchstart', startOnInteraction);
+      });
+    }
   }
 
 
