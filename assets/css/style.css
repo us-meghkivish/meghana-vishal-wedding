@@ -22,17 +22,13 @@ h1, h2, h3, .font-serif {
   font-family: 'Cinzel', serif;
 }
 
-.font-signature {
-  font-family: 'Great Vibes', cursive;
-}
-
-/* Custom Selection Color (Gold Text Highlight) */
+/* Custom Selection Color */
 ::selection {
   background: var(--gold);
   color: white;
 }
 
-/* Custom Scrollbar (Browser Window) */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -52,12 +48,6 @@ h1, h2, h3, .font-serif {
    2. CINEMATIC EFFECTS
    ========================================= */
 
-/* Film Grain Overlay */
-.noise-overlay {
-  /* Position and Texture handled in HTML style attribute for performance */
-  mix-blend-mode: overlay;
-}
-
 /* Custom Gold Cursor */
 #cursor-dot {
   width: 12px;
@@ -72,208 +62,124 @@ h1, h2, h3, .font-serif {
   mix-blend-mode: difference;
 }
 
-/* Hover state expansion */
 body.hovering #cursor-dot {
   transform: translate(-50%, -50%) scale(4);
   opacity: 0.2;
 }
 
+/* 3D GOLDEN FIREFLIES */
+.firefly {
+  position: fixed;
+  width: 5px; height: 5px; border-radius: 50%; background: white;
+  box-shadow: 0 0 10px 2px rgba(212, 175, 55, 0.8), 0 0 20px 5px rgba(212, 175, 55, 0.4);
+  pointer-events: none; z-index: 1; will-change: transform, opacity;
+  animation: move-firefly linear infinite, blink-firefly 3s ease-in-out infinite;
+}
+@keyframes move-firefly {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(15vw, -15vh) scale(1.2); }
+  66% { transform: translate(-10vw, 10vh) scale(0.8); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+@keyframes blink-firefly { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
 /* =========================================
-   3. HERO & TEXT ANIMATIONS
+   3. ANIMATIONS & REVEALS
    ========================================= */
 
-/* Hero Text Fade Up Animation */
+/* Hero Fade Up */
 @keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  to { opacity: 1; transform: translateY(0); }
 }
-
 .animate-fade-in-up {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 1s ease-out forwards;
 }
 
-/* General Reveal Text Class (Triggered by GSAP) */
-.reveal-text {
-  opacity: 0;
-  transform: translateY(30px);
+/* 3D Curtain Reveal */
+.curtain-reveal { position: relative; overflow: hidden; }
+.curtain { 
+    position: absolute; inset: 0; background: var(--gold); z-index: 20; 
+    transform: scaleY(1); transform-origin: bottom; 
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1); 
 }
+.curtain-reveal.active .curtain { transform: scaleY(0); transform-origin: top; }
 
 /* =========================================
-   4. CURTAIN REVEAL (CRITICAL FIX)
+   4. LUXURY 3D LOGO
    ========================================= */
-
-.curtain-reveal {
-  position: relative;
-  overflow: hidden;
-}
-
-.curtain {
-  position: absolute;
-  inset: 0;
-  background: var(--gold);
-  z-index: 20;
-  /* Start by covering the image completely */
-  transform: scaleY(1);
-  transform-origin: bottom;
-  transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
-}
-
-/* When JS adds the 'active' class to the CONTAINER (.curtain-reveal),
-   scale the CURTAIN (.curtain) down to 0 to show the photo.
-*/
-.curtain-reveal.active .curtain {
-  transform: scaleY(0);
-  transform-origin: top;
-}
-
-/* =========================================
-   5. ALBUM STACKS & SCROLLING
-   ========================================= */
-
-/* Hide scrollbar for the horizontal scroll container (Mobile) */
-.scrollbar-hide::-webkit-scrollbar {
-    display: none;
-}
-.scrollbar-hide {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-}
-
-/* Smooth transition for album hover effects */
-.group:hover .transform {
-  transition-duration: 500ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* =========================================
-   6. MUSIC EQUALIZER
-   ========================================= */
-
-.bar {
-  width: 2px;
-  background-color: var(--gold);
-  border-radius: 2px;
-  /* Default animation state */
-  animation: eq-bounce 1s infinite ease-in-out;
-}
-
-/* Stagger animations for wave look */
-.bar:nth-child(1) { animation-delay: 0.0s; }
-.bar:nth-child(2) { animation-delay: 0.2s; }
-.bar:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes eq-bounce {
-  0%, 100% { height: 4px; }
-  50% { height: 12px; }
-}
-
-/* State when music is paused */
-.opacity-50 .bar {
-  animation-play-state: paused;
-  height: 2px !important;
-}
-
-/* =========================================
-   7. FORM ELEMENTS (RSVP)
-   ========================================= */
-
-/* Remove default focus outline */
-input:focus {
-  outline: none;
-}
-
-/* Custom Checkbox Color */
-input[type="checkbox"] {
-  accent-color: var(--gold);
-  cursor: pointer;
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-/* Radio Button Hover & Checked Effects */
-/* test */
-input[type="radio"]:checked + div {
-  background-color: var(--gold);
-  color: white;
-  border-color: var(--gold);
-  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4);
-}
-
-/* --- FLOATING POLAROID ANIMATION --- */
-@keyframes float-left {
-  0% { transform: translateY(0px) rotate(-3deg); }
-  50% { transform: translateY(-15px) rotate(-3deg); }
-  100% { transform: translateY(0px) rotate(-3deg); }
-}
-
-@keyframes float-right {
-  0% { transform: translateY(0px) rotate(3deg); }
-  50% { transform: translateY(-15px) rotate(3deg); }
-  100% { transform: translateY(0px) rotate(3deg); }
-}
-
-/* Apply animation to cards */
-.floating-card-1 {
-  animation: float-left 6s ease-in-out infinite;
-}
-
-.floating-card-2 {
-  animation: float-right 7s ease-in-out infinite; /* Slightly slower for natural feel */
-}
-
-/* Pause on hover */
-.floating-card-1:hover, .floating-card-2:hover {
-  animation-play-state: paused;
-}
-
-/* --- LUXURY 3D WAX SEAL EMBLEM --- */
-.logo-3d-container {
-  perspective: 1200px;
-}
-
+.logo-3d-container { perspective: 1200px; }
 .logo-3d-emblem {
   transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-style: preserve-3d;
-  /* The "BEND": More dramatic tilt for a professional 3D stance */
   transform: rotateX(20deg) rotateY(-20deg) rotateZ(-5deg);
 }
-
-/* Metallic Shine Animation */
+.logo-face {
+  position: relative; background: white; border-radius: 50%;
+  box-shadow: inset 0 0 15px rgba(191, 149, 63, 0.2), 0 10px 30px rgba(0,0,0,0.15);
+  transform-style: preserve-3d;
+}
 @keyframes goldReflect {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
-
-.logo-face {
-  position: relative;
-  background: white;
-  border-radius: 50%;
-  box-shadow: 
-    inset 0 0 15px rgba(191, 149, 63, 0.2),
-    0 10px 30px rgba(0,0,0,0.15);
-  transform-style: preserve-3d;
-}
-
-/* 3D Depth Rim */
 .logo-face::after {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: 50%;
-  padding: 3px;
+  content: ''; position: absolute; inset: -2px; border-radius: 50%; padding: 3px;
   background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fcf6ba, #bf953f);
   background-size: 200% auto;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  -webkit-mask-composite: xor; mask-composite: exclude;
   animation: goldReflect 6s linear infinite;
 }
-
 .logo-3d-container:hover .logo-3d-emblem {
   transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1.15) translateZ(40px);
+}
+
+/* =========================================
+   5. 3D GYROSCOPE MUSIC PLAYER
+   ========================================= */
+@keyframes gyroSpin {
+  0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+  100% { transform: rotateX(360deg) rotateY(180deg) rotateZ(360deg); }
+}
+@keyframes gyroSpinRev {
+  0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+  100% { transform: rotateX(-360deg) rotateY(-180deg) rotateZ(-360deg); }
+}
+.ring-3d {
+  position: absolute; border-radius: 50%;
+  border: 2px solid rgba(212, 175, 55, 0.8);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  transition: all 0.5s ease;
+}
+#music-control.playing .outer-ring { animation: gyroSpin 3s linear infinite; }
+#music-control.playing .inner-ring { animation: gyroSpinRev 4s linear infinite; }
+@keyframes float-music {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+#music-control { animation: float-music 4s ease-in-out infinite; perspective: 1000px; }
+
+/* =========================================
+   6. HOLOGRAPHIC TILT (CARDS & PHOTOS)
+   ========================================= */
+.tilt-box { perspective: 1000px; transform-style: preserve-3d; }
+.tilt-element { transition: transform 0.1s ease; will-change: transform; }
+
+/* =========================================
+   7. FORM ELEMENTS (RSVP)
+   ========================================= */
+input:focus { outline: none; }
+input[type="checkbox"] {
+  accent-color: var(--gold);
+  cursor: pointer;
+  width: 1.25rem; height: 1.25rem;
+}
+input[type="radio"]:checked + div {
+  background-color: #FFFBF0;
+  color: var(--gold);
+  border-color: var(--gold);
+  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
 }
