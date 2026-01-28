@@ -146,9 +146,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================================================
   // 5. COUNTDOWN TIMER (FINAL CELEBRATION MODE)
   // =========================================================
-  // const weddingDate = new Date("2026-03-08T11:11:00+05:30").getTime();
+  const weddingDate = new Date("2026-03-08T11:11:00+05:30").getTime();
+  
   // FOR TESTING ONLY (Uncomment below to see it happen in 5 seconds):
-  const weddingDate = new Date().getTime() + 10000; 
+  // const weddingDate = new Date().getTime() + 10000; 
   
   // State tracker to prevent infinite explosions
   let celebrationTriggered = false;
@@ -376,32 +377,37 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // =========================================================
-  // 10. 3D HOLOGRAPHIC TILT EFFECT
-  // =========================================================
-  const tiltCards = document.querySelectorAll(".tilt-box");
+// =========================================================
+// 10. 3D HOLOGRAPHIC TILT EFFECT (Desktop Only)
+// =========================================================
+const tiltCards = document.querySelectorAll(".tilt-box");
 
-  tiltCards.forEach(card => {
-    card.addEventListener("mousemove", (e) => {
-        const el = card.querySelector(".tilt-element");
-        const rect = card.getBoundingClientRect();
-        
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = ((y - centerY) / centerY) * -20; 
-        const rotateY = ((x - centerX) / centerX) * 20;
+// Only run this logic on larger screens (Desktop/Laptop)
+if (window.innerWidth > 1024) {
+    tiltCards.forEach(card => {
+        card.addEventListener("mousemove", (e) => {
+            const el = card.querySelector(".tilt-element");
+            const rect = card.getBoundingClientRect();
+            
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            // Limit rotation to 20 degrees so it's not too extreme
+            const rotateX = ((y - centerY) / centerY) * -20; 
+            const rotateY = ((x - centerX) / centerX) * 20;
 
-        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+            el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+        });
+
+        card.addEventListener("mouseleave", () => {
+            const el = card.querySelector(".tilt-element");
+            // Reset to flat instantly when mouse leaves
+            el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+        });
     });
-
-    card.addEventListener("mouseleave", () => {
-        const el = card.querySelector(".tilt-element");
-        el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
-    });
-  });
+}
 
   // =========================================================
   // 11. PARALLAX HERO TEXT
