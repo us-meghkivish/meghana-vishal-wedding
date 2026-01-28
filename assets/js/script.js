@@ -234,127 +234,119 @@ document.addEventListener("DOMContentLoaded", () => {
   updateTimer(); setInterval(updateTimer, 1000);
 
 
-  // =========================================================
-  // 6. VISITOR COUNTER
-  // =========================================================
+// =========================================================
+// 6. GLOBAL VISITOR COUNTER (SUPABASE REAL-TIME)
+// =========================================================
+async function updateGlobalViews() {
   const countEl = document.getElementById('visit-count');
-  if (countEl) {
-    let views = localStorage.getItem('page_views') || 842;
-    views = parseInt(views) + 1;
-    localStorage.setItem('page_views', views);
-    countEl.innerText = views.toLocaleString();
+  if (!supabaseClient || !countEl) return;
+
+  try {
+    // 1. Fetch current count
+    let { data, error } = await supabaseClient
+      .from('site_stats')
+      .select('count')
+      .eq('id', 'views')
+      .single();
+
+    if (data) {
+      let newCount = data.count + 1;
+      countEl.innerText = newCount.toLocaleString();
+
+      // 2. Update Supabase with the new count
+      await supabaseClient
+        .from('site_stats')
+        .update({ count: newCount })
+        .eq('id', 'views');
+    }
+  } catch (err) {
+    console.warn("View counter failed to sync:", err);
   }
+}
+
+updateGlobalViews();
 
 
-  // =========================================================
-  // 7. JOYFUL RSVP FORM
-  // =========================================================
-  const rsvpForm = document.getElementById('rsvp-form');
-  const guestDropdown = document.getElementById('guests-dropdown');
-  const manualWrapper = document.getElementById('manual-guest-wrapper');
-  const manualInput = document.getElementById('guests-manual');
-  const submitBtn = document.getElementById('submit-btn');
-  const statusMsg = document.getElementById('form-status');
+// =========================================================
+// 7. SMART RSVP FORM LOGIC
+// =========================================================
+const rsvpForm = document.getElementById('rsvp-form');
+const guestDropdown = document.getElementById('guests-dropdown');
+const manualWrapper = document.getElementById('manual-guest-wrapper');
+const manualInput = document.getElementById('guests-manual');
 
-  // A. Handle "More than 5" Dropdown Logic
-  if (guestDropdown) {
-    guestDropdown.addEventListener('change', function() {
-      if (this.value === 'more') {
-        manualWrapper.classList.remove('grid-rows-[0fr]');
-        manualWrapper.classList.add('grid-rows-[1fr]');
-        manualInput.required = true;
-        manualInput.focus();
-      } else {
-        manualWrapper.classList.remove('grid-rows-[1fr]');
-        manualWrapper.classList.add('grid-rows-[0fr]');
-        manualInput.required = false;
-        manualInput.value = ''; 
-      }
-    });
-  }
+// A. Toggle the manual input box only for "more"
+if (guestDropdown) {
+  guestDropdown.addEventListener('change', function() {
+    if (this.value === 'more') {
+      manualWrapper.classList.remove('grid-rows-[0fr]');
+      manualWrapper.classList.add('grid-rows-[1fr]');
+      manualInput.required = true;
+      manualInput.focus();
+    } else {
+      manualWrapper.classList.remove('grid-rows-[1fr]');
+      manualWrapper.classList.add('grid-rows-[0fr]');
+      manualInput.required = false;
+      manualInput.value = ''; 
+    }
+  });
+}
 
-  // B. Handle Form Submission
-  if (rsvpForm) {
-    rsvpForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
+// B. Handle Form Submission
+if (rsvpForm) {
+  rsvpForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-      if (!supabaseClient) {
-        alert("Please set up Supabase keys in assets/js/script.js");
-        return;
-      }
+    const submitBtn = document.getElementById('submit-btn');
+    const statusMsg = document.getElementById('form-status');
+    
+    // UI Loading State
+    submitBtn.disabled = true;
+    submitBtn.innerText = "Sending...";
 
-      // UI Loading State
-      const originalText = submitBtn.innerText;
-      submitBtn.disabled = true;
-      submitBtn.innerText = "Processing...";
-      submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-      statusMsg.classList.add('hidden');
+    // 1. Determine final guest count
+    let finalGuestCount = guestDropdown.value;
+    if (finalGuestCount === 'more') {
+      finalGuestCount = manualInput.value;
+    }
 
-      const countryCode = document.getElementById('country-code').value;
-      const phoneNumber = document.getElementById('phone-number').value;
+    // 2. Combine contact info
+    const countryCode = document.getElementById('country-code').value;
+    const phoneNumber = document.getElementById('phone-number').value;
 
-      let finalGuestCount = guestDropdown.value;
-      if (finalGuestCount === 'more') {
-        finalGuestCount = manualInput.value;
-        if (!finalGuestCount || finalGuestCount < 5) {
-          alert("Please enter a valid number of guests (5 or more).");
-          resetButton();
-          return;
-        }
-      }
+    // 3. Build Data Object
+    const formData = {
+      name: document.getElementById('name').value,
+      contact: `${countryCode} ${phoneNumber}`,
+      side: document.querySelector('input[name="side"]:checked').value,
+      guests: parseInt(finalGuestCount), // This sends the number to Supabase
+      attending: "Yes"
+    };
 
-      const sideSelection = document.querySelector('input[name="side"]:checked');
-      if (!sideSelection) {
-        alert("Please select if you are from the Bride's family or Groom's family.");
-        resetButton();
-        return;
-      }
+    // 4. Send to Supabase
+    try {
+      const { error } = await supabaseClient.from('rsvps').insert([formData]);
+      
+      if (error) throw error;
 
-      const formData = {
-        name: document.getElementById('name').value,
-        contact: `${countryCode} ${phoneNumber}`,
-        side: sideSelection.value,
-        guests: parseInt(finalGuestCount),
-        attending: "Yes" 
-      };
+      // Success
+      statusMsg.textContent = "✨ Thank you! Your RSVP is confirmed.";
+      statusMsg.className = "text-center text-sm font-medium mt-4 text-green-600 block";
+      statusMsg.classList.remove('hidden');
+      rsvpForm.reset();
+      manualWrapper.classList.replace('grid-rows-[1fr]', 'grid-rows-[0fr]');
 
-      try {
-        const { data, error } = await supabaseClient
-          .from('rsvps')
-          .insert([formData]);
-
-        if (error) throw error;
-
-        // Success State
-        statusMsg.textContent = "✨ Thank you! We have received your RSVP.";
-        statusMsg.className = "text-center text-sm font-medium mt-4 text-green-600 block";
-        submitBtn.textContent = "Confirmed ✓";
-        submitBtn.classList.remove('bg-gradient-to-r'); 
-        submitBtn.classList.add('bg-green-600'); 
-        
-        rsvpForm.reset();
-        
-        // Reset animations
-        manualWrapper.classList.remove('grid-rows-[1fr]');
-        manualWrapper.classList.add('grid-rows-[0fr]');
-
-        setTimeout(() => { resetButton(); }, 3000);
-
-      } catch (error) {
-        console.error('Error:', error);
-        statusMsg.textContent = "❌ Connection failed. Please try again.";
-        statusMsg.className = "text-center text-sm font-medium mt-4 text-red-600 block";
-        resetButton();
-      }
-
-      function resetButton() {
-        submitBtn.disabled = false;
-        submitBtn.innerText = originalText;
-        submitBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'bg-green-600');
-        submitBtn.classList.add('bg-gradient-to-r'); 
-      }
-    });
-  }
+    } catch (err) {
+      console.error(err);
+      statusMsg.textContent = "❌ Connection failed. Please try again.";
+      statusMsg.className = "text-center text-sm font-medium mt-4 text-red-600 block";
+      statusMsg.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Confirm Presence";
+    }
+  });
+}
 
 
   // =========================================================
@@ -411,3 +403,50 @@ if(audioEl) {
         }
     });
 }
+
+// =========================================================
+// 10. 3D HOLOGRAPHIC TILT EFFECT
+// =========================================================
+const tiltCards = document.querySelectorAll(".tilt-box");
+
+tiltCards.forEach(card => {
+    card.addEventListener("mousemove", (e) => {
+        const el = card.querySelector(".tilt-element");
+        const rect = card.getBoundingClientRect();
+        
+        // Calculate mouse position relative to the card center
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        // Calculate rotation (max 20 degrees)
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = ((y - centerY) / centerY) * -20; // Reverse sign for natural feel
+        const rotateY = ((x - centerX) / centerX) * 20;
+
+        // Apply 3D Transform
+        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+    });
+
+    // Reset when mouse leaves
+    card.addEventListener("mouseleave", () => {
+        const el = card.querySelector(".tilt-element");
+        el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+    });
+});
+
+// =========================================================
+// 11. PARALLAX HERO TEXT (Floats on scroll)
+// =========================================================
+window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const heroText = document.querySelector('#hero h1');
+    const heroDate = document.querySelector('#hero p');
+    
+    if(heroText) {
+        // Text moves slower than scroll speed (0.5)
+        heroText.style.transform = `translateY(${scrolled * 0.4}px)`;
+        heroText.style.opacity = 1 - (scrolled / 700);
+    }
+});

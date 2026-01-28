@@ -229,3 +229,51 @@ input[type="radio"]:checked + div {
 .floating-card-1:hover, .floating-card-2:hover {
   animation-play-state: paused;
 }
+
+/* --- LUXURY 3D WAX SEAL EMBLEM --- */
+.logo-3d-container {
+  perspective: 1200px;
+}
+
+.logo-3d-emblem {
+  transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-style: preserve-3d;
+  /* The "BEND": More dramatic tilt for a professional 3D stance */
+  transform: rotateX(20deg) rotateY(-20deg) rotateZ(-5deg);
+}
+
+/* Metallic Shine Animation */
+@keyframes goldReflect {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.logo-face {
+  position: relative;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 
+    inset 0 0 15px rgba(191, 149, 63, 0.2),
+    0 10px 30px rgba(0,0,0,0.15);
+  transform-style: preserve-3d;
+}
+
+/* 3D Depth Rim */
+.logo-face::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fcf6ba, #bf953f);
+  background-size: 200% auto;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: goldReflect 6s linear infinite;
+}
+
+.logo-3d-container:hover .logo-3d-emblem {
+  transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale(1.15) translateZ(40px);
+}
