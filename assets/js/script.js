@@ -144,57 +144,107 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // =========================================================
-  // 5. COUNTDOWN TIMER
+  // 5. COUNTDOWN TIMER (FINAL CELEBRATION MODE)
   // =========================================================
-  const weddingDate = new Date("2026-03-08T11:11:00+05:30").getTime();
+  // const weddingDate = new Date("2026-03-08T11:11:00+05:30").getTime();
+  // FOR TESTING ONLY (Uncomment below to see it happen in 5 seconds):
+  const weddingDate = new Date().getTime() + 10000; 
   
+  // State tracker to prevent infinite explosions
+  let celebrationTriggered = false;
+
   function updateTimer() {
     const now = new Date().getTime();
     const distance = weddingDate - now;
+
+    // A. DOM Elements
+    const timerContainer = document.querySelector('.flex.gap-4.md\\:gap-8.mt-12'); // The div holding days/hrs/mins
+    const tagline = document.querySelector('[data-i18n="hero_tagline"]');
+    
+    // B. If Countdown is ACTIVE
     if (distance > 0) {
       const days = Math.floor(distance / (1000 * 60 * 60 * 24));
       const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
       const fmt = (n) => n < 10 ? "0" + n : n;
       const dEl = document.getElementById("days"); if (dEl) dEl.innerText = fmt(days);
       const hEl = document.getElementById("hours"); if (hEl) hEl.innerText = fmt(hours);
       const mEl = document.getElementById("minutes"); if (mEl) mEl.innerText = fmt(minutes);
       const sEl = document.getElementById("seconds"); if (sEl) sEl.innerText = fmt(seconds);
-    }
-  }
-  updateTimer(); setInterval(updateTimer, 1000);
+    
+    } else {
+      // C. If Countdown is FINISHED (The Wedding has started/passed)
+      
+      // 1. Trigger the Celebration ONCE
+      if (!celebrationTriggered) {
+        celebrationTriggered = true;
+        launchConfetti(); // Fire the cannons
+        
+        // 2. Animate the Transition
+        if(timerContainer) {
+            // Fade out the numbers
+            gsap.to(timerContainer, { 
+                opacity: 0, 
+                duration: 1, 
+                onComplete: () => {
+                    // Replace numbers with "Just Married"
+                    timerContainer.innerHTML = `
+                        <div class="flex flex-col items-center animate-fade-in-up">
+                            <span class="text-4xl md:text-6xl font-serif text-[#D4AF37] drop-shadow-lg">Just Married</span>
+                            <span class="text-sm uppercase tracking-[0.3em] text-white/80 mt-4">Est. March 8, 2026</span>
+                        </div>
+                    `;
+                    // Fade it back in
+                    gsap.to(timerContainer, { opacity: 1, duration: 1.5 });
+                }
+            });
+        }
 
-  // =========================================================
-  // 6. GLOBAL VISITOR COUNTER (Real-time)
-  // =========================================================
-  async function updateGlobalViews() {
-    const countEl = document.getElementById('visit-count');
-    if (!supabaseClient || !countEl) return;
-
-    try {
-      // 1. Fetch
-      let { data, error } = await supabaseClient
-        .from('site_stats')
-        .select('count')
-        .eq('id', 'views')
-        .single();
-
-      if (data) {
-        let newCount = data.count + 1;
-        countEl.innerText = newCount.toLocaleString();
-
-        // 2. Update
-        await supabaseClient
-          .from('site_stats')
-          .update({ count: newCount })
-          .eq('id', 'views');
+        // 3. Update the Top Tagline
+        if (tagline) {
+            gsap.to(tagline, { opacity: 0, duration: 0.5, onComplete: () => {
+                tagline.innerText = "The Adventure Begins";
+                tagline.classList.add("text-[#D4AF37]");
+                gsap.to(tagline, { opacity: 1, duration: 0.5 });
+            }});
+        }
       }
-    } catch (err) {
-      console.warn("View sync failed:", err);
     }
   }
-  updateGlobalViews();
+
+  // --- CONFETTI CANNONS (Gold & White) ---
+  function launchConfetti() {
+    const duration = 3000; // Lasts 3 seconds
+    const end = Date.now() + duration;
+
+    (function frame() {
+      // Launch from Left
+      confetti({
+        particleCount: 3,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.8 },
+        colors: ['#D4AF37', '#ffffff', '#FDF8F5'] // Gold, White, Cream
+      });
+      // Launch from Right
+      confetti({
+        particleCount: 3,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.8 },
+        colors: ['#D4AF37', '#ffffff', '#FDF8F5']
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    }());
+  }
+
+  updateTimer(); 
+  setInterval(updateTimer, 1000);
 
   // =========================================================
   // 7. ROBUST RSVP FORM
