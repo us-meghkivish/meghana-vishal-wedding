@@ -214,8 +214,8 @@ input[type="radio"]:checked + div {
   background-size: 300% 300%;
   animation: liquidBorder 4s ease infinite;
   -webkit-mask: 
-     linear-gradient(#fff 0 0) content-box, 
-     linear-gradient(#fff 0 0);
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
@@ -268,3 +268,22 @@ input[type="radio"]:checked + div {
   filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.6));
 }
 .joy-icon-wrapper { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+/* =========================================
+   9. NAVIGATION UTILITIES (New for Mobile Nav)
+   ========================================= */
+
+/* Hide scrollbar for clean look */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Fade gradient on the right side of nav links */
+.mask-gradient {
+  -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, black 85%, transparent 100%);
+}

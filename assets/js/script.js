@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // =========================================================
   gsap.registerPlugin(ScrollTrigger);
 
-  // 🔴 YOUR SUPABASE KEYS 🔴
+  // SUPABASE KEYS
   const SB_URL = 'https://sunuodrpzvkdgdocmcqw.supabase.co';
   const SB_KEY = 'sb_publishable_tX0LkWnAeO1yf-pzm3r6Eg_53nDIWsq';
   
@@ -32,23 +32,21 @@ document.addEventListener("DOMContentLoaded", () => {
       nav_story: "Our Story", nav_gallery: "Gallery", nav_venues: "Venues", nav_albums: "Albums", nav_rsvp: "RSVP",
       hero_tagline: "We Are Getting Married", hero_sub: "Written in the Stars",
       label_days: "Days", label_hours: "Hrs", label_minutes: "Mins", label_seconds: "Secs",
-      story_label: "How It Happened", story_title: "It Wasn't Love at First Sight...",
-      story_p1: "It started with a casual coffee that turned into a 4-hour conversation...",
-      story_p2: "From long drives with no destination to quiet moments...",
+      story_p1: "Some love stories start with a spark; ours began with a quiet understanding...",
+      story_p2: "Through laughter, adventures, and life's little moments...",
       story_quote: "\"Everything makes sense when we're together.\"",
       gallery_title: "Captured Moments", gallery_sub: "Glimpses of our journey",
       venues_title: "When & Where", venue_wedding: "The Wedding", venue_wedding_time: "March 8, 2026 | 11:11 AM",
       venue_reception: "The Reception", venue_reception_time: "March 11, 2026 | 7:00 PM Onwards",
       btn_live: "Watch Live", btn_map: "View Map",
       albums_title: "Photo Albums", album_haldi: "Haldi", album_sangeet: "Sangeet", album_wedding: "Wedding", album_reception: "Reception",
-      rsvp_title: "RSVP", rsvp_headline: "Join The Celebration", 
+      rsvp_headline: "Join The Celebration", 
       visit_label: "Views:"
     },
     te: {
       nav_story: "మా కథ", nav_gallery: "జ్ఞాపకాలు", nav_venues: "వేదికలు", nav_albums: "ఆల్బమ్స్", nav_rsvp: "ఆహ్వానం",
       hero_tagline: "మేము ఒక్కటవుతున్నాము", hero_sub: "నక్షత్రాలలో లిఖించబడింది",
       label_days: "రోజులు", label_hours: "గంటలు", label_minutes: "నిమిషాలు", label_seconds: "సెకన్లు",
-      story_label: "మా ప్రయాణం", story_title: "ఇది తొలిచూపు ప్రేమ కాదు...",
       story_p1: "మా పరిచయం ఒక సాధారణ కాఫీతో మొదలైంది...",
       story_p2: "గమ్యం లేని ప్రయాణాలు, మౌనంగా సాగిన సంభాషణలు...",
       story_quote: "\"మేము కలిసున్నప్పుడు ప్రపంచం అందంగా కనిపిస్తుంది.\"",
@@ -57,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
       venue_reception: "రిసెప్షన్", venue_reception_time: "మార్చి 11, 2026 | సాయంత్రం 7:00",
       btn_live: "లైవ్ చూడండి", btn_map: "మ్యాప్ చూడండి",
       albums_title: "ఫోటో ఆల్బమ్స్", album_haldi: "హల్దీ", album_sangeet: "సంగీత్", album_wedding: "వివాహం", album_reception: "రిసెప్షన్",
-      rsvp_title: "ఆహ్వానం", rsvp_headline: "వేడుకలో మాతో చేరండి",
+      rsvp_headline: "వేడుకలో మాతో చేరండి",
       visit_label: "వీక్షణలు:"
     }
   };
@@ -72,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
           gsap.to(el, { opacity: 1, duration: 0.2 });
         }});
       });
+      // Corrected Logic: Shows Native Script
       langBtn.innerText = currentLang === "en" ? "EN / తెలుగు" : "తెలుగు / EN";
     });
   }
@@ -296,13 +295,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-});
+  // =========================================================
+  // 9. EXTERNAL EVENTS (Visibility & Audio Sync)
+  // =========================================================
 
-// =========================================================
-// 9. EXTERNAL EVENTS (Visibility & Audio Sync)
-// =========================================================
-
-document.addEventListener('visibilitychange', function() {
+  document.addEventListener('visibilitychange', function() {
     const audio = document.getElementById('bg-music');
     if (!audio) return;
     
@@ -314,27 +311,27 @@ document.addEventListener('visibilitychange', function() {
             audio.play().catch(() => console.log("Resume blocked"));
         }
     }
-});
+  });
 
-const audioEl = document.getElementById('bg-music');
-if(audioEl) {
+  const audioEl = document.getElementById('bg-music');
+  if(audioEl) {
     audioEl.addEventListener('ended', function() {
         sessionStorage.setItem('music_finished', 'true'); // Mark as done forever
         
         const btn = document.getElementById('music-control');
         if(btn) {
-             btn.classList.add("opacity-50");
-             btn.classList.remove("playing");
+              btn.classList.add("opacity-50");
+              btn.classList.remove("playing");
         }
     });
-}
+  }
 
-// =========================================================
-// 10. 3D HOLOGRAPHIC TILT EFFECT
-// =========================================================
-const tiltCards = document.querySelectorAll(".tilt-box");
+  // =========================================================
+  // 10. 3D HOLOGRAPHIC TILT EFFECT
+  // =========================================================
+  const tiltCards = document.querySelectorAll(".tilt-box");
 
-tiltCards.forEach(card => {
+  tiltCards.forEach(card => {
     card.addEventListener("mousemove", (e) => {
         const el = card.querySelector(".tilt-element");
         const rect = card.getBoundingClientRect();
@@ -354,21 +351,21 @@ tiltCards.forEach(card => {
         const el = card.querySelector(".tilt-element");
         el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
     });
-});
+  });
 
-// =========================================================
-// 11. PARALLAX HERO TEXT
-// =========================================================
-window.addEventListener('scroll', () => {
+  // =========================================================
+  // 11. PARALLAX HERO TEXT
+  // =========================================================
+  window.addEventListener('scroll', () => {
     const scrolled = window.scrollY;
     const heroText = document.querySelector('#hero h1');
     if(heroText) {
         heroText.style.transform = `translateY(${scrolled * 0.4}px)`;
         heroText.style.opacity = 1 - (scrolled / 700);
     }
-});
+  });
 
-// =========================================================
+  // =========================================================
   // 12. VENUE CARDS FLY-IN ANIMATION
   // =========================================================
   gsap.from("#venues .tilt-box:first-child", {
@@ -387,3 +384,5 @@ window.addEventListener('scroll', () => {
     delay: 0.2, // Slight delay for the second card
     ease: "power3.out"
   });
+
+});
