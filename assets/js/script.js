@@ -367,3 +367,23 @@ window.addEventListener('scroll', () => {
         heroText.style.opacity = 1 - (scrolled / 700);
     }
 });
+
+// =========================================================
+  // 12. VENUE CARDS FLY-IN ANIMATION
+  // =========================================================
+  gsap.from("#venues .tilt-box:first-child", {
+    scrollTrigger: { trigger: "#venues", start: "top 80%" },
+    x: -100,
+    opacity: 0,
+    duration: 1.5,
+    ease: "power3.out"
+  });
+
+  gsap.from("#venues .tilt-box:last-child", {
+    scrollTrigger: { trigger: "#venues", start: "top 80%" },
+    x: 100,
+    opacity: 0,
+    duration: 1.5,
+    delay: 0.2, // Slight delay for the second card
+    ease: "power3.out"
+  });
