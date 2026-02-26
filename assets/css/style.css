@@ -333,3 +333,40 @@ input[type="radio"]:checked + div {
   transform: scale(1.15);
   box-shadow: 0 15px 40px rgba(212, 175, 55, 0.6);
 }
+
+/* =========================================
+   11. HERO EXTRAS (Calendar + Scroll)
+   ========================================= */
+
+.calendar-btn {
+  box-shadow: 0 5px 20px rgba(212, 175, 55, 0.2);
+}
+
+.calendar-btn:hover {
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+  transform: translateY(-3px);
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+  animation: fadeScroll 2s ease-in-out infinite;
+}
+
+@keyframes fadeScroll {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.arrow-down {
+  width: 20px;
+  height: 20px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(-45deg);
+  animation: bounceArrow 1.5s infinite;
+}
+
+@keyframes bounceArrow {
+  0%, 100% { transform: rotate(-45deg) translateY(0); }
+  50% { transform: rotate(-45deg) translateY(8px); }
+}
