@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
       venues_title: "When & Where", venue_wedding: "The Wedding", venue_wedding_time: "March 8, 2026 | 11:11 AM",
       venue_reception: "The Reception", venue_reception_time: "March 11, 2026 | 7:00 PM Onwards",
       btn_live: "Watch Live", btn_map: "View Map",
-      albums_title: "Photo Albums", album_haldi: "Haldi", album_sangeet: "Sangeet", album_wedding: "Wedding", album_reception: "Reception",
+      albums_title: "Photo Albums", album_haldi: "Haldi", album_wedding: "Wedding", album_reception: "Reception",
       rsvp_headline: "Join The Celebration", 
       visit_label: "Views:"
     },
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
       venues_title: "వేదికలు", venue_wedding: "వివాహం", venue_wedding_time: "మార్చి 8, 2026 | ఉదయం 11:11",
       venue_reception: "రిసెప్షన్", venue_reception_time: "మార్చి 11, 2026 | సాయంత్రం 7:00",
       btn_live: "లైవ్ చూడండి", btn_map: "మ్యాప్ చూడండి",
-      albums_title: "ఫోటో ఆల్బమ్స్", album_haldi: "హల్దీ", album_sangeet: "సంగీత్", album_wedding: "వివాహం", album_reception: "రిసెప్షన్",
+      albums_title: "ఫోటో ఆల్బమ్స్", album_haldi: "హల్దీ", album_wedding: "వివాహం", album_reception: "రిసెప్షన్",
       rsvp_headline: "వేడుకలో మాతో చేరండి",
       visit_label: "వీక్షణలు:"
     }
