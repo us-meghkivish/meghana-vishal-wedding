@@ -109,11 +109,6 @@
     </div>
   </button>
 
-  <div class="fixed bottom-6 right-6 z-50 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-xl flex items-center gap-2">
-    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-    <span class="text-[10px] uppercase tracking-widest font-bold text-zinc-800" data-i18n="visit_label">Views:</span>
-    <span id="visit-count" class="text-[10px] font-bold text-[#D4AF37]">842</span>
-  </div>
 
   <nav class="fixed top-0 w-full z-50 bg-black/30 backdrop-blur-md border-b border-white/10 transition-all duration-500">
     <div class="container mx-auto px-4 flex justify-between items-center h-16 md:h-20">
@@ -211,12 +206,11 @@
         <div class="w-16 h-0.5 bg-[#D4AF37] mx-auto mb-4"></div>
         <p class="text-xs uppercase tracking-widest text-zinc-400" data-i18n="gallery_sub">Glimpses of our journey</p>
       </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-        <div class="tilt-box overflow-hidden rounded-xl shadow-lg"><div class="tilt-element"><img src="assets/images/gallery-1.jpeg" class="w-full object-cover"></div></div>
-        <!-- <div class="tilt-box overflow-hidden rounded-xl shadow-lg lg:mt-12"><div class="tilt-element"><img src="assets/images/gallery-2.png" class="w-full object-cover"></div></div>
-        <div class="tilt-box overflow-hidden rounded-xl shadow-lg"><div class="tilt-element"><img src="assets/images/gallery-3.png" class="w-full object-cover"></div></div>
-        <div class="tilt-box overflow-hidden rounded-xl shadow-lg lg:-mt-12"><div class="tilt-element"><img src="assets/images/gallery-4.png" class="w-full object-cover"></div></div>
-        <div class="tilt-box overflow-hidden rounded-xl shadow-lg"><div class="tilt-element"><img src="assets/images/gallery-5.png" class="w-full object-cover"></div> --></div>
+      <div class="flex justify-center">>
+        <div class="tilt-box overflow-hidden rounded-xl shadow-lg w-full max-w-md">
+        <div class="tilt-element">
+          <img src="assets/images/gallery-1.jpeg" class="w-full object-cover">
+        </div>
       </div>
     </div>
   </section>
@@ -301,10 +295,6 @@
           <h3 class="mt-4 font-serif" data-i18n="album_reception">Reception</h3>
         </div>
         <div class="tilt-box text-center group cursor-pointer" onclick="window.open('YOUR_DRIVE_LINK')">
-          <!-- <div class="tilt-element"><img src="assets/images/sangeet.jpeg" class="w-full h-64 object-cover rounded-lg shadow-lg"></div> -->
-          <!-- <h3 class="mt-4 font-serif" data-i18n="album_sangeet">Sangeet</h3> -->
-        </div>
-        <div class="tilt-box text-center group cursor-pointer" onclick="window.open('YOUR_DRIVE_LINK')">
           <div class="tilt-element"><img src="assets/images/haldi.jpeg" class="w-full h-64 object-cover rounded-lg shadow-lg"></div>
           <h3 class="mt-4 font-serif" data-i18n="album_haldi">Haldi</h3>
         </div>
@@ -378,5 +368,14 @@
     <p class="text-[10px] uppercase tracking-[0.4em] text-white/40">© 2026 The Wedding</p>
   </footer>
 
+  <!-- Instagram Floating Button -->
+<a href="https://www.instagram.com/meghkivish/" target="_blank"
+   class="fixed bottom-8 right-8 z-50 w-14 h-14 flex items-center justify-center 
+          rounded-full bg-gradient-to-tr from-pink-500 via-red-500 to-yellow-500 
+          text-white shadow-xl hover:scale-110 transition-transform duration-300">
+  <i class="fa-brands fa-instagram text-xl"></i>
+</a>
+
 </body>
 </html>
+

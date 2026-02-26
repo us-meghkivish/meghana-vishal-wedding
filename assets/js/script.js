@@ -245,37 +245,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(updateTimer, 1000);
 
   // =========================================================
-  // 6. GLOBAL VISITOR COUNTER (Real-time)
-  // =========================================================
-  async function updateGlobalViews() {
-    const countEl = document.getElementById('visit-count');
-    if (!supabaseClient || !countEl) return;
-
-    try {
-      // 1. Fetch
-      let { data, error } = await supabaseClient
-        .from('site_stats')
-        .select('count')
-        .eq('id', 'views')
-        .single();
-
-      if (data) {
-        let newCount = data.count + 1;
-        countEl.innerText = newCount.toLocaleString();
-
-        // 2. Update
-        await supabaseClient
-          .from('site_stats')
-          .update({ count: newCount })
-          .eq('id', 'views');
-      }
-    } catch (err) {
-      console.warn("View sync failed:", err);
-    }
-  }
-  updateGlobalViews();
-
-  // =========================================================
   // 7. ROBUST RSVP FORM
   // =========================================================
   const rsvpForm = document.getElementById('rsvp-form');
