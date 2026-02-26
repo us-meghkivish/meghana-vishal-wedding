@@ -370,3 +370,41 @@ input[type="radio"]:checked + div {
   0%, 100% { transform: rotate(-45deg) translateY(0); }
   50% { transform: rotate(-45deg) translateY(8px); }
 }
+
+
+/* =========================================
+   SCROLL INDICATOR (Luxury Version)
+   ========================================= */
+
+.scroll-indicator {
+  animation: fadeInScroll 2s ease-in-out infinite;
+}
+
+@keyframes fadeInScroll {
+  0%,100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.mouse {
+  width: 26px;
+  height: 42px;
+  border: 2px solid #D4AF37;;
+  border-radius: 20px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.mouse-dot {
+  width: 4px;
+  height: 8px;
+  background: #D4AF37;
+  border-radius: 3px;
+  margin-top: 6px;
+  animation: scrollDot 1.5s infinite;
+}
+
+@keyframes scrollDot {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(14px); opacity: 0; }
+}

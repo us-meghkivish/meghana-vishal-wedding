@@ -175,9 +175,17 @@
         Add to Calendar
       </a>
       <!-- Scroll Down Indicator -->
-      <div class="scroll-indicator mt-12 flex flex-col items-center text-white opacity-70">
-        <span class="text-[10px] uppercase tracking-[0.3em] mb-2">Scroll</span>
-        <div class="arrow-down"></div>
+      <div class="scroll-indicator mt-12 flex flex-col items-center cursor-pointer"
+          onclick="document.getElementById('story').scrollIntoView({ behavior: 'smooth' })">
+
+        <span class="text-[10px] uppercase tracking-[0.4em] text-white/80 mb-4">
+          Scroll Down
+        </span>
+
+        <div class="mouse">
+          <div class="mouse-dot"></div>
+        </div>
+
       </div>
     </div>
   </section>
