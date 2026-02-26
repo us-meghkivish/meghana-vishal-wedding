@@ -175,16 +175,15 @@
         Add to Calendar
       </a>
       <!-- Scroll Down Indicator -->
-      <div class="scroll-indicator mt-12 flex flex-col items-center cursor-pointer"
+      <!-- Mobile Friendly Scroll Indicator -->
+      <div class="scroll-indicator mt-14 flex flex-col items-center cursor-pointer"
           onclick="document.getElementById('story').scrollIntoView({ behavior: 'smooth' })">
 
-        <span class="text-[10px] uppercase tracking-[0.4em] text-white/80 mb-4">
-          Scroll Down
+        <span class="scroll-text">
+          Swipe Up
         </span>
 
-        <div class="mouse">
-          <div class="mouse-dot"></div>
-        </div>
+        <i class="fa-solid fa-angle-down scroll-arrow"></i>
 
       </div>
     </div>
@@ -305,7 +304,17 @@
   <section id="albums" class="py-24 bg-stone-50">
     <div class="container mx-auto px-6">
       <h2 class="text-4xl md:text-6xl font-serif text-center mb-16" data-i18n="albums_title">Photo Albums</h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="tilt-box text-center group cursor-pointer" onclick="window.open('YOUR_DRIVE_LINK')">
+          <div class="tilt-element"><img src="assets/images/haldi.jpeg" class="w-full h-64 object-cover rounded-lg shadow-lg"></div>
+          <h3 class="mt-4 font-serif" data-i18n="album_haldi">Haldi</h3>
+        </div>
+        <div class="tilt-box text-center group cursor-pointer" onclick="window.open('YOUR_DRIVE_LINK')">
+          <div class="tilt-element">
+            <img src="assets/images/mehendi.jpeg" class="w-full h-64 object-cover rounded-lg shadow-lg">
+          </div>
+          <h3 class="mt-4 font-serif" data-i18n="album_mehendi">Mehendi</h3>
+        </div>
         <div class="tilt-box text-center group cursor-pointer" onclick="window.open('YOUR_DRIVE_LINK')">
           <div class="tilt-element"><img src="assets/images/wedding.jpeg" class="w-full h-64 object-cover rounded-lg shadow-lg"></div>
           <h3 class="mt-4 font-serif" data-i18n="album_wedding">Wedding</h3>
@@ -314,10 +323,7 @@
           <div class="tilt-element"><img src="assets/images/reception.jpeg" class="w-full h-64 object-cover rounded-lg shadow-lg"></div>
           <h3 class="mt-4 font-serif" data-i18n="album_reception">Reception</h3>
         </div>
-        <div class="tilt-box text-center group cursor-pointer" onclick="window.open('YOUR_DRIVE_LINK')">
-          <div class="tilt-element"><img src="assets/images/haldi.jpeg" class="w-full h-64 object-cover rounded-lg shadow-lg"></div>
-          <h3 class="mt-4 font-serif" data-i18n="album_haldi">Haldi</h3>
-        </div>
+
       </div>
     </div>
   </section>
